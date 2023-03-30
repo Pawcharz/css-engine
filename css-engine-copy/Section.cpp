@@ -5,12 +5,26 @@ Section::Section() {
 	attributes = nullptr;
 }
 
-Section::~Section() {
-	delete selectors;
-	delete attributes;
+//Section::Section(Section& other) {
+//	selectors = new List<MyString>(*other.selectors);
+//	attributes = new List<Attribute>(*other.attributes);
+//}
+
+void Section::Reset() {
+	if (selectors != nullptr) {
+		delete selectors;
+	}
+	if (attributes != nullptr) {
+		delete attributes;
+	}
 
 	selectors = nullptr;
 	attributes = nullptr;
+
+}
+
+Section::~Section() {
+	Reset();
 }
 
 void Section::AddSelector(MyString& selector) {
@@ -20,3 +34,12 @@ void Section::AddSelector(MyString& selector) {
 
 	selectors->AddElement(selector);
 }
+
+void Section::AddAttribute(Attribute& attribute) {
+	if (attributes == nullptr) {
+		attributes = new List<Attribute>();
+	}
+
+	attributes->AddElement(attribute);
+}
+

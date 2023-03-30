@@ -16,11 +16,6 @@ enum SectionReadingStage {
 	ATTRIBUTES
 };
 
-enum AttributeReadingStage {
-	NAME,
-	VALUE
-};
-
 class Reader
 {
 private:
@@ -29,9 +24,11 @@ private:
 		SectionReadingStage sectionReadingStage = SELECTORS;
 		MyString* selector = new MyString();
 
-		AttributeReadingStage attributeReadingStage = NAME;
-		MyString* attributeName = new MyString();
-		MyString* attributeValue = new MyString();
+		AttributePart attributeReadingStage = NAME;
+		/*MyString* attributeName = new MyString();
+		MyString* attributeValue = new MyString();*/
+
+		Attribute* attribute = new Attribute();
 	}* sectionsTemp;
 
 	struct TemporaryCommands {
@@ -42,7 +39,7 @@ private:
 
 	char currentChar;
 
-	List<Section>* sectionList;
+	List<Section>* sectionsList;
 
 
 	//int CountSections();

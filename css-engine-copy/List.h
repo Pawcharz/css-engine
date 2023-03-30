@@ -35,12 +35,21 @@ private:
 
 		// Assuming the node is not full - otherwise => bad allocation
 		void AddElement(T& otherData) {
-			T dataCopy(otherData);
+			T* dataCopy = new T(otherData);
 			if (data == nullptr) {
 				data = new T[dataSize];
 				dataPopulated = 0;
 			}
-			data[dataPopulated] = dataCopy;
+			data[dataPopulated] = *dataCopy;
+			dataPopulated += 1;
+		}
+
+		void AddElement(T* otherDataPtr) {
+			if (data == nullptr) {
+				data = new T[dataSize];
+				dataPopulated = 0;
+			}
+			data[dataPopulated] = *otherDataPtr;
 			dataPopulated += 1;
 		}
 
@@ -96,10 +105,28 @@ private:
 		tail = newNode;
 	}
 
+	void AddNode(T* data) {
+		ListNode* newNode = new ListNode(nodeDataSize);
+		newNode->AddElement(data);
+
+		if (tail == nullptr) {
+			head = newNode;
+			tail = newNode;
+
+			return;
+		}
+
+		tail->next = newNode;
+		newNode->previous = tail;
+		tail = newNode;
+	}
+
 public:
 	List() {
 		head = nullptr;
 		tail = nullptr;
+
+		nodeDataSize = 1;
 	}
 
 	List(int nodeDataSize): nodeDataSize(nodeDataSize) {
@@ -108,7 +135,10 @@ public:
 	}
 
 	~List() {
-
+		while (tail != nullptr)
+		{
+			RemoveLastNode();
+		}
 	}
 
 	
@@ -132,6 +162,27 @@ public:
 		tail->AddElement(data);
 	}
 
+	void AddElement(T* data) {
+		if (tail == nullptr) {
+			ListNode* newNode = new ListNode(nodeDataSize);
+			newNode->AddElement(data);
+
+			head = newNode;
+			tail = newNode;
+
+			return;
+		}
+
+		if (tail->dataSize == tail->dataPopulated) {
+			AddNode(data);
+
+			return;
+		}
+
+		tail->AddElement(data);
+	}
+
+
 	void RemoveLastElement() {
 		tail->RemoveLastElement();
 
@@ -143,14 +194,31 @@ public:
 	void RemoveLastNode() {
 		ListNode* prevTail = tail;
 
-		if (tail->previous != nullptr) {
+		bool hasOneNode = false;
+		if (tail == head) {
+			hasOneNode = true;
+		}
+
+		if (hasOneNode) {
+			delete tail;
+			tail = nullptr;
+			head = nullptr;
+		}
+		else {
+			tail = tail->previous;
+			delete prevTail;
+		}
+
+		/*if (tail->previous != nullptr) {
 			tail = tail->previous;
 		}
 		else {
 			tail = nullptr;
+			head = nullptr;
 		}
 
 		delete prevTail;
+		prevTail = nullptr;*/
 	}
 };
 

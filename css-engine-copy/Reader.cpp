@@ -1,6 +1,4 @@
 #include "Reader.h"
-//#include "CssSectionListNode.h"
-//#include "CssSelectorNode.h"
 #include "MyString.h"
 #include "List.h"
 #include "MyString.h"
@@ -27,7 +25,7 @@ Reader::Reader() : mode{ SECTIONS } {
 
 	currentChar = ' ';
 
-	sectionList = new List<Section>();
+	sectionsList = new List<Section>();
 }
 
 
@@ -60,41 +58,30 @@ void Reader::ReadSelectors() {
 }
 
 void Reader::ReadAttributes() {
-	/*if (currentChar == ATTRIBUTE_SEPARATOR || currentChar == CSS_SECTION_CLOSE_CHAR) {
+	if (currentChar == ATTRIBUTE_SEPARATOR || currentChar == CSS_SECTION_CLOSE_CHAR) {
 
-		sectionsTemp->attributeName->TrimEdgeWhiteSpaces();
-		sectionsTemp->attributeValue->TrimEdgeWhiteSpaces();
-		CssAttributeNode attributeNode = { *sectionsTemp->attributeName, *sectionsTemp->attributeValue };
+		sectionsTemp->attribute->Trim();
 
-		sectionsTemp->section->AddAttribute(attributeNode);
+		sectionsTemp->section->AddAttribute(*sectionsTemp->attribute);
 
-		sectionsTemp->attributeName = new MyString();
-		sectionsTemp->attributeValue = new MyString();
+		sectionsTemp->attribute->Reset();
+
 		sectionsTemp->attributeReadingStage = NAME;
 
 		if (currentChar == CSS_SECTION_CLOSE_CHAR) {
 
 			sectionsTemp->sectionReadingStage = SELECTORS;
 
-			rootSectionListNode->AddSection(*(sectionsTemp->section));
-
-			sectionsTemp->section = new CssSection();
-
+			sectionsList->AddElement(sectionsTemp->section);
+			sectionsTemp->section = new Section();
 		}
 	}
 	else if (currentChar == ATTRIBUTE_NAME_VALUE_SEPARATOR) {
 		sectionsTemp->attributeReadingStage = VALUE;
 	}
 	else {
-
-		if (sectionsTemp->attributeReadingStage == NAME) {
-			*(sectionsTemp->attributeName) += currentChar;
-		}
-		else {
-			*(sectionsTemp->attributeValue) += currentChar;
-		}
-
-	}*/
+		sectionsTemp->attribute->AddCharacter(currentChar, sectionsTemp->attributeReadingStage);
+	}
 }
 
 

@@ -13,9 +13,15 @@ private:
 public:
 	Section();
 
+	Section(Section& other);
+
 	~Section();
 
 
 	void AddSelector(MyString& selector);
+
+	void AddAttribute(Attribute& attribute);
+
+	void Reset();
 };
 

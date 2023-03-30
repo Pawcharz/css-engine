@@ -9,6 +9,12 @@ MyString::MyString() : length(0), lengthWithBuffer(0), characters(nullptr) {
 }
 
 MyString::MyString(const char* CharactersArg, int length): length(length) {
+    if (length == 0) {
+        lengthWithBuffer = 0;
+        characters = nullptr;
+        return;
+    }
+
     lengthWithBuffer = GetLengthWithBuffer(length);
     characters = new char[lengthWithBuffer];
 
@@ -132,7 +138,9 @@ bool MyString::IsEqual(const MyString& other) {
 }
 
 void MyString::Reset() {
-    delete[] characters;
+    if (characters != nullptr) {
+        delete[] characters;
+    }
     characters = nullptr;
     length = 0;
     lengthWithBuffer = 0;
