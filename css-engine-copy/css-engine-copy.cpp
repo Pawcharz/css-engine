@@ -7,27 +7,28 @@
 
 //using namespace std;
 
-
 int main()
 {
-	/*MyString str1("abcd", 4);
+	MyString str1("abcd", 4);
 	MyString str2("efg", 3);
 	MyString str3("hijkl", 5);
-	List<MyString>* testList = new List<MyString>();
+	List<MyString>* testList = new List<MyString>(3);
 
-	testList->AddNode(str1);
-	testList->AddNode(str2);
-	testList->AddNode(str3);
+	testList->AddElement(str1);
+	testList->AddElement(str2);
+	testList->AddElement(str3);
+	testList->AddElement(str1);
+	testList->AddElement(str2);
 
-	testList->Remove_Last();
+	testList->RemoveLastElement();
 
-	delete testList;*/
+	delete testList;
 
-	Reader* reader = new Reader();
+	/*Reader* reader = new Reader();
 
 
 	reader->ReadAll();
 
 
-	//delete reader;
+	delete reader;*/
 }

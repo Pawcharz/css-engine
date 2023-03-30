@@ -4,36 +4,38 @@ const int INVALID_INDEX = -1;
 
 using namespace std;
 
-MyString::MyString() : length(0), characters(nullptr) {
+MyString::MyString() : length(0), lengthWithBuffer(0), characters(nullptr) {
 
 }
 
-MyString::MyString(const char* existingCharacters, int length) :length(length) {
-
-    characters = new char[length];
+MyString::MyString(const char* CharactersArg, int length): length(length) {
+    lengthWithBuffer = GetLengthWithBuffer(length);
+    characters = new char[lengthWithBuffer];
 
     for (int i = 0; i < length; i++)
     {
-        characters[i] = existingCharacters[i];
+        characters[i] = CharactersArg[i];
     }
 }
 
 MyString::MyString(MyString& other) : length(other.length) {
-    characters = new char[length];
+    lengthWithBuffer = GetLengthWithBuffer(length);
+    characters = new char[lengthWithBuffer];
 
     for (int i = 0; i < length; i++) {
         characters[i] = other.characters[i];
     }
 }
 
-//MyString& MyString::operator=(MyString& other) {
-//    MyString tmp = other;
-//
-//    swap(characters, tmp.characters);
-//
-//    swap(length, tmp.length);
-//    return *this;
-//}
+MyString& MyString::operator=(MyString& other) {
+    MyString tmp = other;
+
+    swap(characters, tmp.characters);
+
+    swap(length, tmp.length);
+    swap(lengthWithBuffer, tmp.lengthWithBuffer);
+    return *this;
+}
 
 MyString::~MyString() {
     if (characters != nullptr) {
@@ -42,6 +44,7 @@ MyString::~MyString() {
     
     characters = nullptr;
     length = 0;
+    lengthWithBuffer = 0;
 }
 
 char& MyString::operator[](int index) {
@@ -56,19 +59,37 @@ char& MyString::operator[](int index) {
 void MyString::operator+=(char character) {
     int newLength = length + 1;
 
-    char* charactersTmp = new char[newLength];
+    if (newLength < lengthWithBuffer) {
+        characters[length] = character;
+        length = newLength;
+        return;
+    }
+
+
+    lengthWithBuffer = GetLengthWithBuffer(newLength);
+    char* charactersTmp = new char[lengthWithBuffer];
 
     for (int i = 0; i < length; i++)
     {
         charactersTmp[i] = characters[i];
     }
 
-    charactersTmp[newLength - 1] = character;
+    charactersTmp[length] = character;
 
     swap(characters, charactersTmp);
     length = newLength;
 
     delete[] charactersTmp;
+}
+
+int MyString::GetLengthWithBuffer(int lengthToUpdate) {
+   
+    int more = STRING_BUFFER_SIZE - (lengthToUpdate % STRING_BUFFER_SIZE);
+    if (more == STRING_BUFFER_SIZE) {
+        more = 0;
+    }
+
+    return lengthToUpdate + more;
 }
 
 
@@ -114,6 +135,7 @@ void MyString::Reset() {
     delete[] characters;
     characters = nullptr;
     length = 0;
+    lengthWithBuffer = 0;
 
     return;
 }
@@ -163,6 +185,7 @@ void MyString::TrimEdgeWhiteSpaces() {
 
     swap(characters, charactersTemp);
     length = newLength;
+    lengthWithBuffer = GetLengthWithBuffer(length);
 
     delete[] charactersTemp;
 }

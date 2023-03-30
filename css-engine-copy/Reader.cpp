@@ -34,6 +34,8 @@ Reader::Reader() : mode{ SECTIONS } {
 void Reader::ReadSelectors() {
 
 	if (currentChar == SELECTORS_SEPARATOR || currentChar == CSS_SECTION_OPEN_CHAR) {
+		sectionsTemp->selector->TrimEdgeWhiteSpaces();
+
 		if (sectionsTemp->selector->IsEmpty()) {
 			sectionsTemp->selector = new MyString("*", 1);
 		}

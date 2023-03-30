@@ -5,26 +5,31 @@ using namespace std;
 
 const char SPACE_CHARACTER = ' ';
 const char NEW_LINE_CHARACTER = '\n';
+const int STRING_BUFFER_SIZE = 5;
 
 class MyString
 {
 private:
 	char* characters;
+
+	int lengthWithBuffer;
 	int length;
 
-	friend ostream& operator<<(ostream& ostr, MyString& str);
+	//friend ostream& operator<<(ostream& ostr, MyString& str);
+
+	int GetLengthWithBuffer(int lengthToUpdate);
 
 public:
 	MyString();
 
-	MyString(const char* characters, int length);
+	MyString(const char* CharactersArg, int length);
 
 	MyString(MyString& other);
 
 	~MyString();
 
 
-	//MyString& operator=(MyString& newValue);
+	MyString& operator=(MyString& other);
 
 	//MyString& operator=(char character);
 
@@ -34,8 +39,8 @@ public:
 
 	bool IsEmpty();
 
-	bool IsEqual(MyString& right);
-	bool IsEqual(const MyString& right);
+	bool IsEqual(MyString& other);
+	bool IsEqual(const MyString& other);
 
 	//int& GetLength();
 

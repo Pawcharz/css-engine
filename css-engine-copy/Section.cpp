@@ -14,5 +14,9 @@ Section::~Section() {
 }
 
 void Section::AddSelector(MyString& selector) {
-	selectors->AddNode(selector);
+	if (selectors == nullptr) {
+		selectors = new List<MyString>();
+	}
+
+	selectors->AddElement(selector);
 }
