@@ -1,4 +1,9 @@
 #pragma once
+#include <iostream>
+//#include "Section.h"
+//#include "Attribute.h"
+
+using namespace std;
 
 template <typename T>
 class List
@@ -6,10 +11,12 @@ class List
 private:
 
 	int nodeDataSize;
-
+	//friend Section::AssignAttribute(Attribute* attribute);
 	class ListNode
 	{
 	public:
+		
+
 		ListNode* next;
 		ListNode* previous;
 
@@ -22,8 +29,42 @@ private:
 			next = nullptr;
 
 			dataSize = 1;
+			dataPopulated = 0;
 
 			data = nullptr;
+		}
+
+		ListNode(ListNode& other) {
+			previous = nullptr;
+			next = nullptr;
+
+			dataSize = other.dataSize;
+			dataPopulated = other.dataPopulated;
+
+			if (dataSize == 0) {
+				data = nullptr;
+				return;
+			}
+
+			data = new T[dataSize];
+			for (int i = 0; i < dataPopulated; i++)
+			{
+				data[i] = other.data[i];
+			}
+		}
+
+		ListNode& operator=(ListNode& other) {
+			ListNode tmp = other;
+
+			swap(next, tmp.next);
+			swap(previous, tmp.previous);
+
+			swap(data, tmp.data);
+
+			dataSize = other.dataSize;
+			dataPopulated = other.dataPopulated;
+
+			return *this;
 		}
 
 		ListNode(int dataSize): dataSize(dataSize){
@@ -31,6 +72,7 @@ private:
 			next = nullptr;
 
 			data = nullptr;
+			dataPopulated = 0;
 		}
 
 		// Assuming the node is not full - otherwise => bad allocation
@@ -44,11 +86,12 @@ private:
 			dataPopulated += 1;
 		}
 
-		void AddElement(T* otherDataPtr) {
+		void AssignElement(T* otherDataPtr) {
 			if (data == nullptr) {
 				data = new T[dataSize];
 				dataPopulated = 0;
 			}
+
 			data[dataPopulated] = *otherDataPtr;
 			dataPopulated += 1;
 		}
@@ -105,9 +148,9 @@ private:
 		tail = newNode;
 	}
 
-	void AddNode(T* data) {
+	void AssignNode(T* data) {
 		ListNode* newNode = new ListNode(nodeDataSize);
-		newNode->AddElement(data);
+		newNode->AssignElement(data);
 
 		if (tail == nullptr) {
 			head = newNode;
@@ -129,6 +172,26 @@ public:
 		nodeDataSize = 1;
 	}
 
+	List(List& other) {
+		nodeDataSize = other.nodeDataSize;
+
+		if (other.head == nullptr) {
+			head = nullptr;
+			tail = nullptr;
+
+			return;
+		}
+
+		//head = new ListNode(*other.head);
+
+		ListNode* iteratorOther = other.head;
+		while (iteratorOther != nullptr)
+		{
+			AssignElement(iteratorOther->data);
+			iteratorOther = iteratorOther->next;
+		}
+	}
+
 	List(int nodeDataSize): nodeDataSize(nodeDataSize) {
 		head = nullptr;
 		tail = nullptr;
@@ -142,7 +205,7 @@ public:
 	}
 
 	
-	void AddElement(T& data) {
+	/*void AddElement(T& data) {
 		if (tail == nullptr) {
 			ListNode* newNode = new ListNode(nodeDataSize);
 			newNode->AddElement(data);
@@ -160,12 +223,12 @@ public:
 		}
 
 		tail->AddElement(data);
-	}
+	}*/
 
-	void AddElement(T* data) {
+	void AssignElement(T* data) {
 		if (tail == nullptr) {
 			ListNode* newNode = new ListNode(nodeDataSize);
-			newNode->AddElement(data);
+			newNode->AssignElement(data);
 
 			head = newNode;
 			tail = newNode;
@@ -174,12 +237,12 @@ public:
 		}
 
 		if (tail->dataSize == tail->dataPopulated) {
-			AddNode(data);
+			AssignNode(data);
 
 			return;
 		}
 
-		tail->AddElement(data);
+		tail->AssignElement(data);
 	}
 
 
@@ -219,6 +282,18 @@ public:
 
 		delete prevTail;
 		prevTail = nullptr;*/
+	}
+
+	int GetElementsCount() {
+		int counter = 0;
+		ListNode* iterator = head;
+		while (iterator != nullptr)
+		{
+			counter += iterator->dataPopulated;
+			iterator = iterator->next;
+		}
+
+		return counter;
 	}
 };
 

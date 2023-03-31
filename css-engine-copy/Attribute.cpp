@@ -10,6 +10,16 @@ Attribute::Attribute(Attribute& other) {
 	value = new MyString(*other.value);
 }
 
+Attribute& Attribute::operator=(Attribute& other) {
+	Attribute tmp = other;
+
+	swap(name, tmp.name);
+
+	swap(value, tmp.value);
+	return *this;
+}
+
+
 void Attribute::Reset() {
 	name->Reset();
 	value->Reset();
@@ -31,5 +41,14 @@ void Attribute::AddCharacter(char character, AttributePart part) {
 void Attribute::Trim() {
 	name->TrimEdgeWhiteSpaces();
 	value->TrimEdgeWhiteSpaces();
+}
+
+
+bool Attribute::IsEmpty() {
+	if (name->GetLength() == 0 && value->GetLength() == 0) {
+		return true;
+	}
+
+	return false;
 }
 

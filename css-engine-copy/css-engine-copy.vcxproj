@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attribute.h" />
+    <ClInclude Include="custom_utlis.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="MyString.h" />
     <ClInclude Include="Reader.h" />

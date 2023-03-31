@@ -197,3 +197,22 @@ void MyString::TrimEdgeWhiteSpaces() {
 
     delete[] charactersTemp;
 }
+
+int MyString::GetLength() {
+    return length;
+}
+
+ostream& operator<<(ostream& ostr, MyString& str) {
+    for (int i = 0; i < str.length; i++)
+    {
+        ostr << str.characters[i];
+    }
+    return ostr;
+}
+ostream& operator<<(ostream& ostr, const MyString& str) {
+    for (int i = 0; i < str.length; i++)
+    {
+        ostr << str.characters[i];
+    }
+    return ostr;
+}

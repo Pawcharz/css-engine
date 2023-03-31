@@ -25,15 +25,13 @@ private:
 		MyString* selector = new MyString();
 
 		AttributePart attributeReadingStage = NAME;
-		/*MyString* attributeName = new MyString();
-		MyString* attributeValue = new MyString();*/
 
 		Attribute* attribute = new Attribute();
 	}* sectionsTemp;
 
 	struct TemporaryCommands {
 		MyString* command = new MyString();
-	}* commandsTmp;
+	}* commandsTemp;
 
 	ReaderMode mode;
 
@@ -55,10 +53,9 @@ public:
 
 	void ReadCommands();
 
-
 	void ReadAll();
 
 
-	//void CleanCommands();
+	void CleanCommands();
 };
 

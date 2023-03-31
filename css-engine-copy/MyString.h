@@ -7,6 +7,8 @@ const char SPACE_CHARACTER = ' ';
 const char NEW_LINE_CHARACTER = '\n';
 const int STRING_BUFFER_SIZE = 5;
 
+using namespace std;
+
 class MyString
 {
 private:
@@ -15,7 +17,8 @@ private:
 	int lengthWithBuffer;
 	int length;
 
-	//friend ostream& operator<<(ostream& ostr, MyString& str);
+	friend ostream& operator<<(ostream& ostr, const MyString& str);
+	friend ostream& operator<<(ostream& ostr, MyString& str);
 
 	int GetLengthWithBuffer(int lengthToUpdate);
 
@@ -31,8 +34,6 @@ public:
 
 	MyString& operator=(MyString& other);
 
-	//MyString& operator=(char character);
-
 	void operator+=(char character);
 
 	char& operator[](int index);
@@ -40,15 +41,13 @@ public:
 	bool IsEmpty();
 
 	bool IsEqual(MyString& other);
+
 	bool IsEqual(const MyString& other);
-
-	//int& GetLength();
-
 
 	void Reset();
 
 	void TrimEdgeWhiteSpaces();
 
-
+	int GetLength();
 };
 

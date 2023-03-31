@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include <iostream>;
+#include <iostream>
 
-#include "List.h";
-#include "MyString.h";
+#include "List.h"
+#include "MyString.h"
 #include "Reader.h"
 
 //using namespace std;

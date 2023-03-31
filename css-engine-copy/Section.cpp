@@ -27,19 +27,35 @@ Section::~Section() {
 	Reset();
 }
 
-void Section::AddSelector(MyString& selector) {
+//void Section::AddSelector(MyString& selector) {
+//	if (selectors == nullptr) {
+//		selectors = new List<MyString>();
+//	}
+//
+//	selectors->AddElement(selector);
+//}
+
+//void Section::AddAttribute(Attribute& attribute) {
+//	if (attributes == nullptr) {
+//		attributes = new List<Attribute>();
+//	}
+//
+//	attributes->AddElement(attribute);
+//}
+
+void Section::AssignSelector(MyString* selectorPtr) {
 	if (selectors == nullptr) {
 		selectors = new List<MyString>();
 	}
 
-	selectors->AddElement(selector);
+	selectors->AssignElement(selectorPtr);
 }
 
-void Section::AddAttribute(Attribute& attribute) {
+void Section::AssignAttribute(Attribute* attribute) {
 	if (attributes == nullptr) {
 		attributes = new List<Attribute>();
 	}
 
-	attributes->AddElement(attribute);
+	attributes->AssignElement(attribute);
 }
 

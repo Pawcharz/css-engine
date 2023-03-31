@@ -13,14 +13,17 @@ private:
 public:
 	Section();
 
-	Section(Section& other);
-
 	~Section();
 
 
-	void AddSelector(MyString& selector);
+	//void AddSelector(MyString& selector);
 
-	void AddAttribute(Attribute& attribute);
+	//void AddAttribute(Attribute& attribute);
+
+
+	void AssignSelector(MyString* selectorPtr);
+
+	void AssignAttribute(Attribute* attribute);
 
 	void Reset();
 };

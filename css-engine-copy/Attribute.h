@@ -18,11 +18,17 @@ public:
 	Attribute(Attribute& other);
 
 	~Attribute();
+
+	Attribute& operator=(Attribute& other);
 	
 	void AddCharacter(char character, AttributePart part);
 
 	void Trim();
 
 	void Reset();
+
+
+	bool IsEmpty();
+
 };
 
