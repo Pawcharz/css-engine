@@ -36,10 +36,9 @@ MyString::MyString(MyString& other) : length(other.length) {
 MyString& MyString::operator=(MyString& other) {
     MyString tmp = other;
 
-    swap(characters, tmp.characters);
-
-    swap(length, tmp.length);
-    swap(lengthWithBuffer, tmp.lengthWithBuffer);
+    customSwap(&characters, &tmp.characters);
+    length = tmp.length;
+    lengthWithBuffer = tmp.lengthWithBuffer;
     return *this;
 }
 
@@ -82,7 +81,7 @@ void MyString::operator+=(char character) {
 
     charactersTmp[length] = character;
 
-    swap(characters, charactersTmp);
+    customSwap(&characters, &charactersTmp); // Not swaping (works inside)
     length = newLength;
 
     delete[] charactersTmp;
@@ -191,7 +190,7 @@ void MyString::TrimEdgeWhiteSpaces() {
         charactersTemp[i] = characters[firstIndex + i];
     }
 
-    swap(characters, charactersTemp);
+    customSwap(&characters, &charactersTemp);
     length = newLength;
     lengthWithBuffer = GetLengthWithBuffer(length);
 

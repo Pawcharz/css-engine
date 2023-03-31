@@ -13,9 +13,9 @@ Attribute::Attribute(Attribute& other) {
 Attribute& Attribute::operator=(Attribute& other) {
 	Attribute tmp = other;
 
-	swap(name, tmp.name);
+	customSwap(&name, &tmp.name);
 
-	swap(value, tmp.value);
+	customSwap(&value, &tmp.value);
 	return *this;
 }
 

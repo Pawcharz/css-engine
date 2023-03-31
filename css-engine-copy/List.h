@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
-//#include "Section.h"
-//#include "Attribute.h"
+#include "custom_utlis.h"
 
 using namespace std;
 
@@ -56,10 +55,10 @@ private:
 		ListNode& operator=(ListNode& other) {
 			ListNode tmp = other;
 
-			swap(next, tmp.next);
-			swap(previous, tmp.previous);
+			customSwap(next, tmp.next);
+			customSwap(previous, tmp.previous);
 
-			swap(data, tmp.data);
+			customSwap(data, tmp.data);
 
 			dataSize = other.dataSize;
 			dataPopulated = other.dataPopulated;
@@ -67,7 +66,7 @@ private:
 			return *this;
 		}
 
-		ListNode(int dataSize): dataSize(dataSize){
+		ListNode(int dataSize): dataSize(dataSize) {
 			previous = nullptr;
 			next = nullptr;
 
