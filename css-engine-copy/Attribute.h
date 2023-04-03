@@ -30,5 +30,11 @@ public:
 
 	bool IsEmpty();
 
+	bool DoesMatchName(Attribute* name);
+	bool DoesMatchName(MyString& name);
+
+
+
+	MyString& GetValue();
 };
 

@@ -56,6 +56,38 @@ void Section::AssignAttribute(Attribute* attribute) {
 		attributes = new List<Attribute>();
 	}
 
-	attributes->AssignElement(attribute);
+	//attributes->AssignElement(attribute);
+	attributes->AssignAttributeElement(attribute);
 }
 
+int Section::GetSelectorsCount() {
+	if (selectors == nullptr) {
+		return 0;
+	}
+
+	return selectors->GetElementsCount();
+}
+
+int Section::GetAttributesCount() {
+	if (attributes == nullptr) {
+		return 0;
+	}
+
+	return attributes->GetElementsCount();
+}
+
+MyString* Section::GetSelector(int index) {
+	if (selectors == nullptr) {
+		return nullptr;
+	}
+
+	return selectors->GetElement(index);
+}
+
+Attribute* Section::GetAttribute(MyString& attributeName) {
+	if (attributes == nullptr) {
+		return nullptr;
+	}
+
+	return attributes->GetAttributeWithName(attributeName);
+}

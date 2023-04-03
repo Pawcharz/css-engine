@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "custom_utlis.h"
+#include "Attribute.h"
 
 using namespace std;
 
@@ -10,12 +11,12 @@ class List
 private:
 
 	int nodeDataSize;
-	//friend Section::AssignAttribute(Attribute* attribute);
+	
 	class ListNode
 	{
 	public:
 		
-
+		
 		ListNode* next;
 		ListNode* previous;
 
@@ -94,6 +95,25 @@ private:
 			data[dataPopulated] = *otherDataPtr;
 			dataPopulated += 1;
 		}
+
+		/*void AssignAttributeElement(Attribute* otherDataPtr) {
+			if (data == nullptr) {
+				data = new T[dataSize];
+				dataPopulated = 0;
+			}
+
+			for (int i = 0; i < dataPopulated; i++)
+			{
+				if (((Attribute)data[i]).DoesMatchName(otherDataPtr)) {
+					data[i] = *otherDataPtr;
+					return;
+				}
+			}
+
+			data[dataPopulated] = *otherDataPtr;
+			dataPopulated += 1;
+		}*/
+
 
 		~ListNode() {
 			if (previous != nullptr) {
@@ -243,7 +263,40 @@ public:
 
 		tail->AssignElement(data);
 	}
+	
+	//Should probably be replaced with some extention of template etc.
+	// Assuming that attributeNodes have maxSize == 1
+	void AssignAttributeElement(Attribute* attribute) {
+		if (tail == nullptr) {
+			ListNode* newNode = new ListNode(nodeDataSize);
+			newNode->AssignElement(attribute);
 
+			head = newNode;
+			tail = newNode;
+
+			return;
+		}
+
+		ListNode* iterator = head;
+		while (iterator != nullptr)
+		{
+			if (iterator->data != nullptr && ((Attribute)iterator->data[0]).DoesMatchName(attribute) ) {
+
+				iterator->data[0] = *attribute;
+				return;
+			}
+			iterator = iterator->next;
+		}
+
+
+		if (tail->dataSize == tail->dataPopulated) {
+			AssignNode(attribute);
+
+			return;
+		}
+
+		tail->AssignElement(attribute);
+	}
 
 	void RemoveLastElement() {
 		tail->RemoveLastElement();
@@ -294,5 +347,43 @@ public:
 
 		return counter;
 	}
-};
 
+	T* GetElement(int elementIndex) {
+		int nodesCounter = 0;
+		ListNode* iterator = head;
+		while (iterator != nullptr)
+		{
+			int lowerBoundary = nodesCounter * nodeDataSize;
+			int upperBoundary = (nodesCounter + 1) * nodeDataSize;
+			if (elementIndex >= lowerBoundary && elementIndex < upperBoundary) {
+				int exactIndex = elementIndex - lowerBoundary;
+				return &iterator->data[exactIndex];
+			}
+
+			nodesCounter += iterator->dataPopulated;
+			iterator = iterator->next;
+		}
+
+		return nullptr;
+	}
+
+	// FIX - Possible bug/tech debt -> dataPopulated
+	Attribute* GetAttributeWithName(MyString& attributeName) {
+		int nodesCounter = 0;
+		ListNode* iterator = head;
+		while (iterator != nullptr)
+		{
+			for (int i = 0; i < iterator->dataPopulated; i++)
+			{
+				if (iterator->data[i].DoesMatchName(attributeName)) {
+					return &iterator->data[i];
+				}
+			}
+
+			nodesCounter += iterator->dataPopulated;
+			iterator = iterator->next;
+		}
+
+		return nullptr;
+	}
+};

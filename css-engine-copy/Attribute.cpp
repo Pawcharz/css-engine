@@ -52,3 +52,20 @@ bool Attribute::IsEmpty() {
 	return false;
 }
 
+bool Attribute::DoesMatchName(Attribute* other) {
+	if (name->IsEqual(*other->name)) {
+		return true;
+	}
+	return false;
+}
+
+bool Attribute::DoesMatchName(MyString& otherName) {
+	if (name->IsEqual(otherName)) {
+		return true;
+	}
+	return false;
+}
+
+MyString& Attribute::GetValue() {
+	return *value;
+}

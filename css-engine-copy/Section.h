@@ -27,5 +27,15 @@ public:
 	void AssignAttribute(Attribute* attribute);
 
 	void Reset();
+
+
+	int GetSelectorsCount();
+
+	int GetAttributesCount();
+
+
+	MyString* GetSelector(int index);
+
+	Attribute* GetAttribute(MyString& attributeName);
 };
 

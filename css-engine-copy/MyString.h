@@ -52,6 +52,9 @@ public:
 
 	int GetLength();
 
+
 	bool isNumerical();
+
+	int ToInteger();
 };
 

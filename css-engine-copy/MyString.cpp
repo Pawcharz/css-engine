@@ -242,3 +242,25 @@ ostream& operator<<(ostream& ostr, const MyString& str) {
     }
     return ostr;
 }
+
+
+int MyString::ToInteger() {
+    int number = 0;
+
+    int powerOf10 = 1;
+
+    for (int i = length-1; i >= 0; i--)
+    {
+        int digit = (int)(characters[i] - '0');
+
+        if (digit < 0 || digit > 9) {
+            return -1;
+        }
+
+        number += powerOf10 * digit;
+
+        powerOf10 *= 10;
+    }
+
+    return number;
+}

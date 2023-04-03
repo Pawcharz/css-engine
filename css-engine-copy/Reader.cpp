@@ -1,25 +1,4 @@
 #include "Reader.h"
-#include "MyString.h"
-#include "List.h"
-#include "MyString.h"
-
-const int BULK_SECTIONS_SIZE = 8;
-
-const char CSS_SECTION_OPEN_CHAR = '{';
-const char CSS_SECTION_CLOSE_CHAR = '}';
-
-const char SELECTORS_SEPARATOR = ',';
-const char ATTRIBUTE_NAME_VALUE_SEPARATOR = ':';
-const char ATTRIBUTE_SEPARATOR = ';';
-
-const char COMMAND_ARG_SEPARATOR = ',';
-
-const char TABULATOR = '\t';
-
-const MyString SECTIONS_READER_ACTIVATOR("****", 4);
-const MyString COMMANDS_READER_ACTIVATOR("????", 4);
-
-const MyString COMMAND_COUNT("?", 1);
 
 using namespace std;
 
@@ -78,8 +57,9 @@ void Reader::ReadAttributes() {
 
 	}
 	else if (currentChar == CSS_SECTION_CLOSE_CHAR) {
+		sectionsTemp->attribute->Trim();
+
 		if (sectionsTemp->attribute->IsEmpty() == false) {
-			sectionsTemp->attribute->Trim();
 
 			sectionsTemp->section->AssignAttribute(sectionsTemp->attribute);
 
@@ -143,29 +123,23 @@ void Reader::ReadSections() {
 
 
 void Reader::ExecuteCommand() {
-	if (commandsTemp->parts[0].IsEqual(COMMAND_COUNT) && commandsTemp->parts[1].IsEmpty())
-	{
-		int size = sectionsList->GetElementsCount();
-
-		cout << COMMAND_COUNT << " == " << size << endl;
+	if (commandsTemp->parts[0].IsEqual(COMMAND_COUNT) && commandsTemp->parts[1].IsEmpty()) {
+		Command_CountSections();
 	}
 	else if(commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("S", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
-		// PrintCountOfSelectors
-		cout << "PrintCountOfSelectors" << endl;
+		Command_CountSelectors();
 	}
 	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("A", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
-		// PrintCountOfAttributes
-		cout << "PrintCountOfAttributes" << endl;
+		Command_CountAttributes();
 	}
 	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("S", 1) && commandsTemp->parts[2].isNumerical()) {
-		// PrintJthSelectorForIthSection
-		cout << "PrintJthSelectorForIthSection" << endl;
+		Command_PrintSelector();
 	}
 	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("A", 1) && !commandsTemp->parts[2].isNumerical()) {
-		// PrintValueOfAttribute(name)
-		cout << "PrintValueOfAttribute(name)" << endl;
+		Command_PrintAttributeValue();
 	}
 	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("A", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
+		Command_CountAttributeOccurences();
 		// PrintCountOfAttribute(name)
 		cout << "PrintCountOfAttribute(name)" << endl;
 	}
@@ -188,21 +162,21 @@ void Reader::ExecuteCommand() {
 }
 
 void Reader::ReadCommands() {
-	if (commandsTemp->parts[0].IsEqual(SECTIONS_READER_ACTIVATOR)) {
+	if (commandsTemp->parts[0].IsEqual(SECTIONS_READER_ACTIVATOR) ) {
 		mode = SECTIONS;
 
 		CleanCommands();
 		return;
 	}
 
-	if (currentChar == NEW_LINE_CHARACTER) {
-		cout << "--->" << commandsTemp->parts[0] << "," << commandsTemp->parts[1] << "," << commandsTemp->parts[2] << endl;
+	else if (currentChar == NEW_LINE_CHARACTER) {
+		//cout << "--->" << commandsTemp->parts[0] << "," << commandsTemp->parts[1] << "," << commandsTemp->parts[2] << endl;
 		ExecuteCommand();
 
 		CleanCommands();
 
 	}
-	else if (currentChar == COMMAND_ARG_SEPARATOR) {
+	else if (currentChar == COMMAND_ARG_SEPARATOR && commandsTemp->currentPartIndex < 2) {
 		commandsTemp->currentPartIndex += 1;
 	}
 	else {
