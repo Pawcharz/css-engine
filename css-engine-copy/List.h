@@ -117,8 +117,8 @@ private:
 			dataPopulated -= 1;
 
 			//Should be deleting old data --> FIX this error
-			//delete& (data[dataPopulated]);
-			//data[dataPopulated] = T();
+			delete& (data[dataPopulated]);
+			data[dataPopulated] = T();
 
 			if (dataPopulated == 0) {
 				delete[] data;

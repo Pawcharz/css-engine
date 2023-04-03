@@ -3,6 +3,7 @@
 #include "List.h"
 #include "MyString.h"
 
+const int BULK_SECTIONS_SIZE = 8;
 
 const char CSS_SECTION_OPEN_CHAR = '{';
 const char CSS_SECTION_CLOSE_CHAR = '}';
@@ -11,10 +12,16 @@ const char SELECTORS_SEPARATOR = ',';
 const char ATTRIBUTE_NAME_VALUE_SEPARATOR = ':';
 const char ATTRIBUTE_SEPARATOR = ';';
 
-const MyString SECTIONS_READER_ACTIVATOR_FULL("****", 4); // How to add const here?
-const MyString COMMANDS_READER_ACTIVATOR_FULL("????", 4);
+const char COMMAND_ARG_SEPARATOR = ',';
+
+const char TABULATOR = '\t';
+
+const MyString SECTIONS_READER_ACTIVATOR("****", 4);
+const MyString COMMANDS_READER_ACTIVATOR("????", 4);
 
 const MyString COMMAND_COUNT("?", 1);
+
+using namespace std;
 
 Reader::Reader() : mode{ SECTIONS } {
 
@@ -24,7 +31,7 @@ Reader::Reader() : mode{ SECTIONS } {
 
 	currentChar = ' ';
 
-	sectionsList = new List<Section>();
+	sectionsList = new List<Section>(BULK_SECTIONS_SIZE);
 }
 
 
@@ -49,7 +56,7 @@ void Reader::ReadSelectors() {
 	else {
 		*(sectionsTemp->selector) += currentChar;
 
-		if (sectionsTemp->selector->IsEqual(COMMANDS_READER_ACTIVATOR_FULL)) {
+		if (sectionsTemp->selector->IsEqual(COMMANDS_READER_ACTIVATOR)) {
 			mode = COMMANDS;
 			return;
 		}
@@ -134,42 +141,99 @@ void Reader::ReadSections() {
 	}
 }
 
+
+void Reader::ExecuteCommand() {
+	if (commandsTemp->parts[0].IsEqual(COMMAND_COUNT) && commandsTemp->parts[1].IsEmpty())
+	{
+		int size = sectionsList->GetElementsCount();
+
+		cout << COMMAND_COUNT << " == " << size << endl;
+	}
+	else if(commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("S", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
+		// PrintCountOfSelectors
+		cout << "PrintCountOfSelectors" << endl;
+	}
+	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("A", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
+		// PrintCountOfAttributes
+		cout << "PrintCountOfAttributes" << endl;
+	}
+	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("S", 1) && commandsTemp->parts[2].isNumerical()) {
+		// PrintJthSelectorForIthSection
+		cout << "PrintJthSelectorForIthSection" << endl;
+	}
+	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("A", 1) && !commandsTemp->parts[2].isNumerical()) {
+		// PrintValueOfAttribute(name)
+		cout << "PrintValueOfAttribute(name)" << endl;
+	}
+	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("A", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
+		// PrintCountOfAttribute(name)
+		cout << "PrintCountOfAttribute(name)" << endl;
+	}
+	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("S", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
+		// PrintCountOfSelectorOccurences(name)
+		cout << "PrintCountOfSelectorOccurences(name)" << endl;
+	}
+	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("E", 1) && !commandsTemp->parts[2].isNumerical()) {
+		// PrintValueOfAttributeForSelector(attributeName, selectorName)
+		cout << "PrintValueOfAttributeForSelector(attributeName, selectorName)" << endl;
+	}
+	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("D", 1) && commandsTemp->parts[2].IsEqual("*", 1)) {
+		// RemoveSectionWithNumber(number)
+		cout << "RemoveSectionWithNumber(number)" << endl;
+	}
+	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("D", 1) && !commandsTemp->parts[2].isNumerical()) {
+		// RemoveAttributeFromSection(sectionIndex, attributeName)
+		cout << "RemoveAttributeFromSection(sectionIndex, attributeName)" << endl;
+	}
+}
+
 void Reader::ReadCommands() {
+	if (commandsTemp->parts[0].IsEqual(SECTIONS_READER_ACTIVATOR)) {
+		mode = SECTIONS;
+
+		CleanCommands();
+		return;
+	}
 
 	if (currentChar == NEW_LINE_CHARACTER) {
-		if (commandsTemp->command->IsEqual(COMMAND_COUNT))
-		{
-			int size = sectionsList->GetElementsCount();
+		cout << "--->" << commandsTemp->parts[0] << "," << commandsTemp->parts[1] << "," << commandsTemp->parts[2] << endl;
+		ExecuteCommand();
 
-			cout << COMMAND_COUNT << " == " << size << endl;
-			CleanCommands();
-		}
+		CleanCommands();
+
+	}
+	else if (currentChar == COMMAND_ARG_SEPARATOR) {
+		commandsTemp->currentPartIndex += 1;
 	}
 	else {
-		*(commandsTemp->command) += currentChar;
+		commandsTemp->parts[commandsTemp->currentPartIndex] += currentChar;
 	}
 }
 
 void Reader::ReadAll() {
-	
-	currentChar = getchar();
+	//mode = COMMANDS; //Remove after testing
+
+	//currentChar = getchar();
 
 	while (currentChar != EOF) {
 
-
-		if (mode == SECTIONS) {
-			ReadSections();
-		}
-		else {
-			ReadCommands();
-		}
-
 		currentChar = getchar();
+
+		if (currentChar != TABULATOR) {
+			if (mode == SECTIONS) {
+				ReadSections();
+			}
+			else {
+				ReadCommands();
+			}
+		}
 	};
 }
 
-
 void Reader::CleanCommands() {
-	delete commandsTemp->command;
-	commandsTemp->command = new MyString();
+	for (int i = 0; i < 3; i++)
+	{
+		commandsTemp->parts[i].Reset();
+	}
+	commandsTemp->currentPartIndex = 0;
 }

@@ -35,13 +35,14 @@ public:
 
 	MyString& operator=(MyString& other);
 
-	void operator+=(char character);
+	MyString& operator+=(char character);
 
 	char& operator[](int index);
 
 	bool IsEmpty();
 
 	bool IsEqual(MyString& other);
+	bool IsEqual(const char* CharactersArg, int length);
 
 	bool IsEqual(const MyString& other);
 
@@ -50,5 +51,7 @@ public:
 	void TrimEdgeWhiteSpaces();
 
 	int GetLength();
+
+	bool isNumerical();
 };
 

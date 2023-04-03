@@ -8,7 +8,7 @@ MyString::MyString() : length(0), lengthWithBuffer(0), characters(nullptr) {
 
 }
 
-MyString::MyString(const char* CharactersArg, int length): length(length) {
+MyString::MyString(const char* charactersArg, int length): length(length) {
     if (length == 0) {
         lengthWithBuffer = 0;
         characters = nullptr;
@@ -20,7 +20,7 @@ MyString::MyString(const char* CharactersArg, int length): length(length) {
 
     for (int i = 0; i < length; i++)
     {
-        characters[i] = CharactersArg[i];
+        characters[i] = charactersArg[i];
     }
 }
 
@@ -61,13 +61,13 @@ char& MyString::operator[](int index) {
     return characters[index];
 }
 
-void MyString::operator+=(char character) {
+MyString& MyString::operator+=(char character) {
     int newLength = length + 1;
 
     if (newLength < lengthWithBuffer) {
         characters[length] = character;
         length = newLength;
-        return;
+        return *this;
     }
 
 
@@ -81,10 +81,12 @@ void MyString::operator+=(char character) {
 
     charactersTmp[length] = character;
 
-    customSwap(&characters, &charactersTmp); // Not swaping (works inside)
+    customSwap(&characters, &charactersTmp);
     length = newLength;
 
     delete[] charactersTmp;
+
+    return *this;
 }
 
 int MyString::GetLengthWithBuffer(int lengthToUpdate) {
@@ -133,6 +135,31 @@ bool MyString::IsEqual(const MyString& other) {
         }
     }
 
+    return true;
+}
+
+bool MyString::IsEqual(const char* otherCharacters, int otherLength) {
+    if (otherLength != length) {
+        return false;
+    }
+
+    for (int i = 0; i < length; i++)
+    {
+        if (otherCharacters[i] != characters[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool MyString::isNumerical() {
+    for (int i = 0; i < length; i++)
+    {
+        if (characters[i] - '0' < 0 || characters[i] - '0' > 9) {
+            return false;
+        }
+    }
     return true;
 }
 

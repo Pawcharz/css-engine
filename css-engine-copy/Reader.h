@@ -7,6 +7,9 @@
 
 using namespace std;
 
+const int COMMAND_PARTS_COUNT = 3;
+
+
 enum ReaderMode {
 	SECTIONS,
 	COMMANDS
@@ -31,7 +34,9 @@ private:
 	}* sectionsTemp;
 
 	struct TemporaryCommands {
-		MyString* command = new MyString();
+		MyString* parts = new MyString[COMMAND_PARTS_COUNT]();
+
+		int currentPartIndex = 0;
 	}* commandsTemp;
 
 	ReaderMode mode;
@@ -52,6 +57,7 @@ public:
 	void ReadSelectors();
 	void ReadAttributes();
 
+	void ExecuteCommand();
 	void ReadCommands();
 
 	void ReadAll();
