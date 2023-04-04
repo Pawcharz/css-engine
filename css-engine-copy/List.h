@@ -159,25 +159,6 @@ public:
 			dataPopulated += 1;
 		}
 
-		/*void AssignAttributeElement(Attribute* otherDataPtr) {
-			if (data == nullptr) {
-				data = new T[dataSize];
-				dataPopulated = 0;
-			}
-
-			for (int i = 0; i < dataPopulated; i++)
-			{
-				if (((Attribute)data[i]).DoesMatchName(otherDataPtr)) {
-					data[i] = *otherDataPtr;
-					return;
-				}
-			}
-
-			data[dataPopulated] = *otherDataPtr;
-			dataPopulated += 1;
-		}*/
-
-
 		~ListNode() {
 			if (previous != nullptr) {
 				previous->next = nullptr;
@@ -200,8 +181,6 @@ public:
 				return false;
 			}
 
-			//delete &data[index];
-			//elementMoved = nullptr;
 			data[index].Reset();
 
 			UpdateDataPopulated();
@@ -331,25 +310,28 @@ public:
 
 	bool RemoveElement(int elementIndex) {
 
-		int nodesCounter = 0;
+		int currentIndex = 0;
 		ListNode* iterator = head;
 		while (iterator != nullptr)
 		{
-			int lowerBoundary = nodesCounter * nodeDataSize;
-			int upperBoundary = (nodesCounter + 1) * nodeDataSize;
-			if (elementIndex >= lowerBoundary && elementIndex < upperBoundary) {
-				int exactIndex = elementIndex - lowerBoundary;
 
-				bool wereRemoved = iterator->RemoveElement(exactIndex);
+			for (int i = 0; i <= iterator->lastNonemptyIndex; i++)
+			{
+				if (!iterator->data[i].IsEmpty()) {
+					if (currentIndex == elementIndex) {
 
-				if (wereRemoved && iterator->dataPopulated == 0) {
-					// ADD - remove node !!!
+						bool wereRemoved = iterator->RemoveElement(i);
+
+						if (wereRemoved && iterator->dataPopulated == 0) {
+							cout << "REMOVE NODE" << endl;
+							// ADD - remove node !!!
+						}
+						return wereRemoved;
+					}
+					currentIndex += 1;
 				}
-				
-				return wereRemoved;
 			}
 
-			nodesCounter += 1;
 			iterator = iterator->next;
 		}
 
@@ -369,18 +351,20 @@ public:
 	}
 
 	T* GetElement(int elementIndex) {
-		int nodesCounter = 0;
+		int currentIndex = 0;
 		ListNode* iterator = head;
 		while (iterator != nullptr)
 		{
-			int lowerBoundary = nodesCounter * nodeDataSize;
-			int upperBoundary = (nodesCounter + 1) * nodeDataSize;
-			if (elementIndex >= lowerBoundary && elementIndex < upperBoundary) {
-				int exactIndex = elementIndex - lowerBoundary;
-				return &iterator->data[exactIndex];
+			for (int i = 0; i <= iterator->lastNonemptyIndex; i++)
+			{
+				if (!iterator->data[i].IsEmpty()) {
+					if (currentIndex == elementIndex) {
+						return &iterator->data[i];
+					}
+					currentIndex += 1;
+				}
 			}
 
-			nodesCounter += 1;
 			iterator = iterator->next;
 		}
 

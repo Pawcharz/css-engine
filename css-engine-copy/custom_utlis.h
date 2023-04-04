@@ -6,3 +6,5 @@ void customSwap(T** pointerA, T** pointerB) {
 	*pointerA = *pointerB;
 	*pointerB = temp;
 }
+
+int customModulo(int nr1, int nr2);

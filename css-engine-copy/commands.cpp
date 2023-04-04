@@ -3,9 +3,9 @@
 void Reader::Command_CountSections() {
 	int count = sectionsList->GetElementsCount();
 
-	if (count > 0) {
+	//if (count > 0) {
 		cout << COMMAND_COUNT << " == " << count << endl;
-	}
+	//}
 }
 
 void Reader::Command_CountSelectors() {
@@ -169,7 +169,7 @@ void Reader::Command_PrintAttributeValueBySelector() {
 void Reader::Command_RemoveSection() {
 	int index = commandsTemp->parts[0].ToInteger();
 
-	bool success = sectionsList->RemoveElement(index);
+	bool success = sectionsList->RemoveElement(index-1);
 
 	if (success) {
 		cout << index << ",D,*" << " == deleted" << endl;
