@@ -130,6 +130,7 @@
     <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="commands.cpp" />
     <ClCompile Include="css-engine-copy.cpp" />
+    <ClCompile Include="list_utlis.cpp" />
     <ClCompile Include="MyString.cpp" />
     <ClCompile Include="Reader.cpp" />
     <ClCompile Include="Section.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Attribute.h" />
     <ClInclude Include="custom_utlis.h" />
     <ClInclude Include="List.h" />
+    <ClInclude Include="list_utlis.h" />
     <ClInclude Include="MyString.h" />
     <ClInclude Include="Reader.h" />
     <ClInclude Include="Section.h" />

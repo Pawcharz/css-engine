@@ -37,5 +37,9 @@ public:
 	MyString* GetSelector(int index);
 
 	Attribute* GetAttribute(MyString& attributeName);
+
+
+
+	MyString* GetSelector(MyString& selectorName);
 };
 
