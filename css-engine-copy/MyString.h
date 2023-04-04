@@ -8,6 +8,10 @@ const char SPACE_CHARACTER = ' ';
 const char NEW_LINE_CHARACTER = '\n';
 const int STRING_BUFFER_SIZE = 5;
 
+
+const int INVALID_INDEX = -1;
+
+
 using namespace std;
 
 class MyString

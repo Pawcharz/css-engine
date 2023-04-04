@@ -83,7 +83,7 @@ void Reader::Command_CountAttributeOccurences() {
 	{
 		//Attribute* foundAttribute = FindAttributeByName(attributeName, iterator); //iterator->FindAttributeByName(attributeName);
 
-		for (int i = 0; i < iterator->dataPopulated; i++)
+		for (int i = 0; i <= iterator->lastNonemptyIndex; i++)
 		{
 			Section* element = &iterator->data[i];
 			Attribute* foundAttribute = element->GetAttribute(attributeName);// FindAttributeByName(attributeName, );
@@ -111,7 +111,7 @@ void Reader::Command_CountSelectorOccurences() {
 
 	while (iterator != nullptr)
 	{
-		for (int i = 0; i < iterator->dataPopulated; i++)
+		for (int i = 0; i <= iterator->lastNonemptyIndex; i++)
 		{
 			Section* element = &iterator->data[i];
 			MyString* foundSelector = element->GetSelector(selectorName);// FindAttributeByName(attributeName, );
@@ -142,7 +142,7 @@ void Reader::Command_PrintAttributeValueBySelector() {
 
 	while (iterator != nullptr)
 	{
-		for (int i = iterator->dataPopulated - 1; i >= 0; i--)
+		for (int i = iterator->lastNonemptyIndex; i >= 0; i--)
 		{
 			Section* element = &iterator->data[i];
 			MyString* foundSelector = element->GetSelector(selectorName);
@@ -164,4 +164,14 @@ void Reader::Command_PrintAttributeValueBySelector() {
 	/*if (foundAttribute != nullptr) {
 		cout << selectorName << ",A," << attributeName << " == " << foundAttribute->GetValue() << endl;
 	}*/
+}
+
+void Reader::Command_RemoveSection() {
+	int index = commandsTemp->parts[0].ToInteger();
+
+	bool success = sectionsList->RemoveElement(index);
+
+	if (success) {
+		cout << index << ",D,*" << " == deleted" << endl;
+	}
 }

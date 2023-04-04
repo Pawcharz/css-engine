@@ -154,8 +154,9 @@ void Reader::ExecuteCommand() {
 		//cout << "PrintValueOfAttributeForSelector(attributeName, selectorName)" << endl;
 	}
 	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("D", 1) && commandsTemp->parts[2].IsEqual("*", 1)) {
+		Command_RemoveSection();
 		// RemoveSectionWithNumber(number)
-		cout << "RemoveSectionWithNumber(number)" << endl;
+		//cout << "RemoveSectionWithNumber(number)" << endl;
 	}
 	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("D", 1) && !commandsTemp->parts[2].isNumerical()) {
 		// RemoveAttributeFromSection(sectionIndex, attributeName)

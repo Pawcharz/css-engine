@@ -3,7 +3,7 @@
 // FIX - Possible bug/tech debt -> dataPopulated
 MyString* FindSelectorByName(MyString& selectorName, List<MyString>::ListNode* node) {
 
-	for (int i = 0; i < node->dataPopulated; i++)
+	for (int i = 0; i <= node->lastNonemptyIndex; i++)
 	{
 		MyString current = node->data[i];
 		if (current.IsEqual(selectorName)) {
@@ -35,7 +35,7 @@ MyString* FindSelectorByName(MyString& selectorName, List<MyString>* list) {
 // FIX - Possible bug/tech debt -> dataPopulated
 MyString* FindSelectorByName(MyString& selectorName, List<Section>::ListNode* node) {
 
-	for (int i = 0; i < node->dataPopulated; i++)
+	for (int i = 0; i <= node->lastNonemptyIndex; i++)
 	{
 		Section* current = &node->data[i];
 		MyString* foundSelector = current->GetSelector(selectorName);
@@ -51,7 +51,7 @@ MyString* FindSelectorByName(MyString& selectorName, List<Section>::ListNode* no
 // FIX - Possible bug/tech debt -> dataPopulated
 Attribute* FindAttributeByName(MyString& attributeName, List<Attribute>::ListNode* node) {
 
-	for (int i = 0; i < node->dataPopulated; i++)
+	for (int i = 0; i <= node->lastNonemptyIndex; i++)
 	{
 		Attribute current = node->data[i];
 		if (current.DoesMatchName(attributeName)) {
@@ -83,7 +83,7 @@ Attribute* FindAttributeByName(MyString& attributeName, List<Attribute>* list) {
 // FIX - Possible bug/tech debt -> dataPopulated
 Attribute* FindAttributeByName(MyString& attributeName, List<Section>::ListNode* node) {
 
-	for (int i = 0; i < node->dataPopulated; i++)
+	for (int i = 0; i <= node->lastNonemptyIndex; i++)
 	{
 		Section* current = &node->data[i];
 		Attribute* foundAttribute = current->GetAttribute(attributeName);

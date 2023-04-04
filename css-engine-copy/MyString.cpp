@@ -1,7 +1,5 @@
 #include "MyString.h"
 
-const int INVALID_INDEX = -1;
-
 using namespace std;
 
 MyString::MyString() : length(0), lengthWithBuffer(0), characters(nullptr) {

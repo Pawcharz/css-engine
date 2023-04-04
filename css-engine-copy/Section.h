@@ -28,6 +28,8 @@ public:
 
 	void Reset();
 
+	bool IsEmpty();
+
 
 	int GetSelectorsCount();
 

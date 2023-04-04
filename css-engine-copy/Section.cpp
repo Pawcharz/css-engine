@@ -25,6 +25,13 @@ void Section::Reset() {
 
 }
 
+bool Section::IsEmpty() {
+	if (selectors == nullptr && attributes == nullptr) {
+		return true;
+	}
+	return false;
+}
+
 Section::~Section() {
 	Reset();
 }

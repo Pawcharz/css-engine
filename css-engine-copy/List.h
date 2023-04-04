@@ -48,15 +48,37 @@ private:
 public:
 	class ListNode
 	{
-	public:
+	private:
 
+		void UpdateDataPopulated() {
+			dataPopulated = 0;
+
+			bool hasAlreadyEncounter = false;
+
+			for (int i = dataSize -1; i >= 0; i--)
+			{
+				if (!data[i].IsEmpty()) {
+					if (!hasAlreadyEncounter) {
+						lastNonemptyIndex = i;
+					}
+
+					dataPopulated += 1;
+					hasAlreadyEncounter = true;
+				}
+			}
+		}
+
+	public:
 
 		ListNode* next;
 		ListNode* previous;
 
 		T* data;
 		int dataSize;
+
 		int dataPopulated;
+
+		int lastNonemptyIndex;
 
 		ListNode() {
 			previous = nullptr;
@@ -64,6 +86,7 @@ public:
 
 			dataSize = 1;
 			dataPopulated = 0;
+			lastNonemptyIndex = 0;
 
 			data = nullptr;
 		}
@@ -74,6 +97,7 @@ public:
 
 			dataSize = other.dataSize;
 			dataPopulated = other.dataPopulated;
+			lastNonemptyIndex = other.lastNonemptyIndex;
 
 			if (dataSize == 0) {
 				data = nullptr;
@@ -81,7 +105,7 @@ public:
 			}
 
 			data = new T[dataSize];
-			for (int i = 0; i < dataPopulated; i++)
+			for (int i = 0; i <= lastNonemptyIndex; i++)
 			{
 				data[i] = other.data[i];
 			}
@@ -97,6 +121,7 @@ public:
 
 			dataSize = other.dataSize;
 			dataPopulated = other.dataPopulated;
+			lastNonemptyIndex = other.lastNonemptyIndex;
 
 			return *this;
 		}
@@ -107,6 +132,7 @@ public:
 
 			data = nullptr;
 			dataPopulated = 0;
+			lastNonemptyIndex = INVALID_INDEX;
 		}
 
 		// Assuming the node is not full - otherwise => bad allocation
@@ -116,7 +142,9 @@ public:
 				data = new T[dataSize];
 				dataPopulated = 0;
 			}
-			data[dataPopulated] = *dataCopy;
+			lastNonemptyIndex += 1;
+			data[lastNonemptyIndex] = *dataCopy;
+
 			dataPopulated += 1;
 		}
 
@@ -126,7 +154,8 @@ public:
 				dataPopulated = 0;
 			}
 
-			data[dataPopulated] = *otherDataPtr;
+			lastNonemptyIndex += 1;
+			data[lastNonemptyIndex] = *otherDataPtr;
 			dataPopulated += 1;
 		}
 
@@ -165,20 +194,19 @@ public:
 			data = nullptr;
 		}
 
-		// Assuming some elements exist
-		/*void RemoveLastElement() {
+		bool RemoveElement(int index) {
 
-			dataPopulated -= 1;
-
-			//Should be deleting old data --> FIX this error
-			delete& (data[dataPopulated]);
-			data[dataPopulated] = T();
-
-			if (dataPopulated == 0) {
-				delete[] data;
-				data = nullptr;
+			if (data[index].IsEmpty()) {
+				return false;
 			}
-		}*/
+
+			//delete &data[index];
+			//elementMoved = nullptr;
+			data[index].Reset();
+
+			UpdateDataPopulated();
+			return true;
+		}
 
 	};
 
@@ -258,7 +286,7 @@ public:
 			return;
 		}
 
-		if (tail->dataSize == tail->dataPopulated) {
+		if (tail->dataSize == tail->lastNonemptyIndex+1) {
 			AssignNode(data);
 
 			return;
@@ -292,7 +320,7 @@ public:
 		}
 
 
-		if (tail->dataSize == tail->dataPopulated) {
+		if (tail->dataSize == tail->lastNonemptyIndex + 1) {
 			AssignNode(attribute);
 
 			return;
@@ -301,42 +329,31 @@ public:
 		tail->AssignElement(attribute);
 	}
 
-	void RemoveLastElement() {
-		tail->RemoveLastElement();
+	bool RemoveElement(int elementIndex) {
 
-		if (tail->data == nullptr) {
-			RemoveLastNode();
-		}
-	}
+		int nodesCounter = 0;
+		ListNode* iterator = head;
+		while (iterator != nullptr)
+		{
+			int lowerBoundary = nodesCounter * nodeDataSize;
+			int upperBoundary = (nodesCounter + 1) * nodeDataSize;
+			if (elementIndex >= lowerBoundary && elementIndex < upperBoundary) {
+				int exactIndex = elementIndex - lowerBoundary;
 
-	void RemoveLastNode() {
-		ListNode* prevTail = tail;
+				bool wereRemoved = iterator->RemoveElement(exactIndex);
 
-		bool hasOneNode = false;
-		if (tail == head) {
-			hasOneNode = true;
-		}
+				if (wereRemoved && iterator->dataPopulated == 0) {
+					// ADD - remove node !!!
+				}
+				
+				return wereRemoved;
+			}
 
-		if (hasOneNode) {
-			delete tail;
-			tail = nullptr;
-			head = nullptr;
-		}
-		else {
-			tail = tail->previous;
-			delete prevTail;
+			nodesCounter += 1;
+			iterator = iterator->next;
 		}
 
-		/*if (tail->previous != nullptr) {
-			tail = tail->previous;
-		}
-		else {
-			tail = nullptr;
-			head = nullptr;
-		}
-
-		delete prevTail;
-		prevTail = nullptr;*/
+		return false;
 	}
 
 	int GetElementsCount() {
@@ -380,5 +397,33 @@ public:
 	}
 
 	
+	
+	void RemoveLastElement() {
+		tail->RemoveLastElement();
+
+		if (tail->data == nullptr) {
+			RemoveLastNode();
+		}
+	}
+
+	void RemoveLastNode() {
+		ListNode* prevTail = tail;
+
+		bool hasOneNode = false;
+		if (tail == head) {
+			hasOneNode = true;
+		}
+
+		if (hasOneNode) {
+			delete tail;
+			tail = nullptr;
+			head = nullptr;
+		}
+		else {
+			tail = tail->previous;
+			delete prevTail;
+		}
+	}
+
 };
 
