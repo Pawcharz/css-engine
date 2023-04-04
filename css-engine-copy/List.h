@@ -363,7 +363,7 @@ public:
 				return &iterator->data[exactIndex];
 			}
 
-			nodesCounter += iterator->dataPopulated;
+			nodesCounter += 1;
 			iterator = iterator->next;
 		}
 
