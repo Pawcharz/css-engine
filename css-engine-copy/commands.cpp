@@ -175,3 +175,25 @@ void Reader::Command_RemoveSection() {
 		cout << index << ",D,*" << " == deleted" << endl;
 	}
 }
+
+void Reader::Command_RemoveAttribute() {
+	int sectionNumber = commandsTemp->parts[0].ToInteger();
+	MyString attributeName = commandsTemp->parts[2];
+
+	Section* foundSection = sectionsList->GetElement(sectionNumber - 1);
+
+	if (foundSection == nullptr) {
+		return;
+	}
+
+	bool success = foundSection->RemoveAttribute(attributeName);
+
+	if (success) {
+
+		if (foundSection->GetAttributesCount() == 0) {
+			sectionsList->RemoveElement(sectionNumber - 1);
+		}
+
+		cout << sectionNumber << ",D," << attributeName << " == deleted" << endl;
+	}
+}

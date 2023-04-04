@@ -25,7 +25,7 @@ void Reader::ReadSelectors() {
 
 		sectionsTemp->section->AssignSelector(sectionsTemp->selector);
 
-		sectionsTemp->selector = new MyString();
+		sectionsTemp->selector->Reset();// = new MyString();
 
 		if (currentChar == CSS_SECTION_OPEN_CHAR) {
 
@@ -37,6 +37,7 @@ void Reader::ReadSelectors() {
 
 		if (sectionsTemp->selector->IsEqual(COMMANDS_READER_ACTIVATOR)) {
 			mode = COMMANDS;
+			sectionsTemp->selector->Reset();
 			return;
 		}
 	}
@@ -140,27 +141,20 @@ void Reader::ExecuteCommand() {
 	}
 	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("S", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
 		Command_CountSelectorOccurences();
-		// PrintCountOfSelectorOccurences(name)
-		//cout << "PrintCountOfSelectorOccurences(name)" << endl;
 	}
 	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("A", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
 		Command_CountAttributeOccurences();
-		// PrintCountOfAttribute(name)
-		//cout << "PrintCountOfAttribute(name)" << endl;
 	}
 	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("E", 1) && !commandsTemp->parts[2].isNumerical()) {
 		Command_PrintAttributeValueBySelector();
-		// PrintValueOfAttributeForSelector(attributeName, selectorName)
-		//cout << "PrintValueOfAttributeForSelector(attributeName, selectorName)" << endl;
 	}
 	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("D", 1) && commandsTemp->parts[2].IsEqual("*", 1)) {
 		Command_RemoveSection();
-		// RemoveSectionWithNumber(number)
-		//cout << "RemoveSectionWithNumber(number)" << endl;
 	}
 	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("D", 1) && !commandsTemp->parts[2].isNumerical()) {
+		Command_RemoveAttribute();
 		// RemoveAttributeFromSection(sectionIndex, attributeName)
-		cout << "RemoveAttributeFromSection(sectionIndex, attributeName)" << endl;
+		//cout << "RemoveAttributeFromSection(sectionIndex, attributeName)" << endl;
 	}
 }
 

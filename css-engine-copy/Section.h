@@ -41,7 +41,8 @@ public:
 	Attribute* GetAttribute(MyString& attributeName);
 
 
-
 	MyString* GetSelector(MyString& selectorName);
+
+	bool RemoveAttribute(MyString& attributeName);
 };
 

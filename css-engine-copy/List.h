@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "Attribute.h"
 #include "custom_utlis.h"
+#include "Attribute.h"
 
 using namespace std;
 
@@ -114,10 +114,10 @@ public:
 		ListNode& operator=(ListNode& other) {
 			ListNode tmp = other;
 
-			customSwap(next, tmp.next);
-			customSwap(previous, tmp.previous);
+			customSwap(&next, &tmp.next);
+			customSwap(&previous, &tmp.previous);
 
-			customSwap(data, tmp.data);
+			customSwap(&data, &tmp.data);
 
 			dataSize = other.dataSize;
 			dataPopulated = other.dataPopulated;
@@ -229,30 +229,10 @@ public:
 	~List() {
 		while (tail != nullptr)
 		{
-			RemoveLastNode();
+			RemoveNode(tail);
 		}
 	}
 
-	
-	/*void AddElement(T& data) {
-		if (tail == nullptr) {
-			ListNode* newNode = new ListNode(nodeDataSize);
-			newNode->AddElement(data);
-
-			head = newNode;
-			tail = newNode;
-
-			return;
-		}
-
-		if (tail->dataSize == tail->dataPopulated) {
-			AddNode(data);
-			
-			return;
-		}
-
-		tail->AddElement(data);
-	}*/
 
 	void AssignElement(T* data) {
 		if (tail == nullptr) {
@@ -274,7 +254,6 @@ public:
 		tail->AssignElement(data);
 	}
 	
-	//Should probably be replaced with some extention of template etc.
 	// Assuming that attributeNodes have maxSize == 1
 	void AssignAttributeElement(Attribute* attribute) {
 		if (tail == nullptr) {
@@ -306,36 +285,6 @@ public:
 		}
 
 		tail->AssignElement(attribute);
-	}
-
-	bool RemoveElement(int elementIndex) {
-
-		int currentIndex = 0;
-		ListNode* iterator = head;
-		while (iterator != nullptr)
-		{
-
-			for (int i = 0; i <= iterator->lastNonemptyIndex; i++)
-			{
-				if (!iterator->data[i].IsEmpty()) {
-					if (currentIndex == elementIndex) {
-
-						bool wereRemoved = iterator->RemoveElement(i);
-
-						if (wereRemoved && iterator->dataPopulated == 0) {
-							cout << "REMOVE NODE" << endl;
-							// ADD - remove node !!!
-						}
-						return wereRemoved;
-					}
-					currentIndex += 1;
-				}
-			}
-
-			iterator = iterator->next;
-		}
-
-		return false;
 	}
 
 	int GetElementsCount() {
@@ -371,6 +320,55 @@ public:
 		return nullptr;
 	}
 
+
+	bool RemoveElement(int elementIndex) {
+
+		int currentIndex = 0;
+		ListNode* iterator = head;
+		while (iterator != nullptr)
+		{
+
+			for (int i = 0; i <= iterator->lastNonemptyIndex; i++)
+			{
+				if (!iterator->data[i].IsEmpty()) {
+					if (currentIndex == elementIndex) {
+
+						bool wereRemoved = iterator->RemoveElement(i);
+
+						if (wereRemoved && iterator->dataPopulated == 0) {
+							//cout << "REMOVE NODE" << endl;
+							// ADD - remove node !!!
+							RemoveNode(iterator);
+						}
+						return wereRemoved;
+					}
+					currentIndex += 1;
+				}
+			}
+
+			iterator = iterator->next;
+		}
+
+		return false;
+	}
+
+	void RemoveNode(ListNode* node) {
+		if (node == tail) {
+			head = nullptr;
+			tail = nullptr;
+		}
+		else if (node == head) {
+			head = node->next;
+		}
+		else if (node == tail) {
+			tail = node->previous;
+		}
+
+		delete node;
+		node = nullptr;
+		return;
+	}
+
 	
 	ListNode* GetHead() {
 		return head;
@@ -379,35 +377,5 @@ public:
 	ListNode* GetTail() {
 		return tail;
 	}
-
-	
-	
-	void RemoveLastElement() {
-		tail->RemoveLastElement();
-
-		if (tail->data == nullptr) {
-			RemoveLastNode();
-		}
-	}
-
-	void RemoveLastNode() {
-		ListNode* prevTail = tail;
-
-		bool hasOneNode = false;
-		if (tail == head) {
-			hasOneNode = true;
-		}
-
-		if (hasOneNode) {
-			delete tail;
-			tail = nullptr;
-			head = nullptr;
-		}
-		else {
-			tail = tail->previous;
-			delete prevTail;
-		}
-	}
-
 };
 

@@ -108,3 +108,7 @@ MyString* Section::GetSelector(MyString& selectorName) {
 
 	return FindSelectorByName(selectorName, selectors);
 }
+
+bool Section::RemoveAttribute(MyString& attributeName) {
+	return RemoveAttributeByName(attributeName, attributes);
+}
