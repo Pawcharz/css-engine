@@ -8,9 +8,8 @@ const char SPACE_CHARACTER = ' ';
 const char NEW_LINE_CHARACTER = '\n';
 const char TABULATOR = '\t';
 
+
 const int INVALID_INDEX = -1;
-
-
 
 template<typename T>
 void customSwap(T** pointerA, T** pointerB) {
@@ -19,4 +18,4 @@ void customSwap(T** pointerA, T** pointerB) {
 	*pointerB = temp;
 }
 
-bool isProperCharacter(char character);
+bool shouldIgnoreCharacter(char character);

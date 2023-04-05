@@ -189,21 +189,17 @@ void Reader::ReadCommands() {
 
 void Reader::ReadAll() {
 
-	while (true) {
+	while (currentChar != EOF) {
 
 		currentChar = getchar();
 
-		if (currentChar != TABULATOR) {
+		if (!shouldIgnoreCharacter(currentChar)) {
 			if (mode == SECTIONS) {
 				ReadSections();
 			}
 			else {
 				ReadCommands();
 			}
-		}
-
-		if (currentChar == EOF) {
-			return;
 		}
 	};
 }

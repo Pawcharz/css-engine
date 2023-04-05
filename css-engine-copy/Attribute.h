@@ -30,8 +30,8 @@ public:
 
 	bool IsEmpty();
 
-	bool DoesMatchName(Attribute* name);
-	bool DoesMatchName(MyString& name);
+	bool DoesMatchName(Attribute* other);
+	bool DoesMatchName(MyString& otherName);
 
 
 

@@ -1,16 +1,20 @@
 #include "custom_utlis.h";
 
-bool isProperCharacter(char character) {
+bool shouldIgnoreCharacter(char character) {
 	int asciiCode = character;
 	int spaceAsciiCode = ' ';
 
-	if (character == EOF || character == NEW_LINE_CHARACTER || character == TABULATOR || asciiCode == 13) {
+	if (character == TABULATOR) {
 		return true;
+	}
+
+	if (character == EOF || character == NEW_LINE_CHARACTER) {
+		return false;
 	}
 
 	if (asciiCode >= spaceAsciiCode) {
-		return true;
+		return false;
 	}
 
-	return false;
+	return true;
 }

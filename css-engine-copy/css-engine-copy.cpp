@@ -8,9 +8,7 @@ int main()
 {
 	Reader* reader = new Reader();
 
-
 	reader->ReadAll();
-
 
 	delete reader;
 }
