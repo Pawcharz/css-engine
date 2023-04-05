@@ -1,5 +1,17 @@
 #pragma once
 
+#include <iostream>
+
+using namespace std;
+
+const char SPACE_CHARACTER = ' ';
+const char NEW_LINE_CHARACTER = '\n';
+const char TABULATOR = '\t';
+
+const int INVALID_INDEX = -1;
+
+
+
 template<typename T>
 void customSwap(T** pointerA, T** pointerB) {
 	T* temp = *pointerA;
@@ -7,4 +19,4 @@ void customSwap(T** pointerA, T** pointerB) {
 	*pointerB = temp;
 }
 
-int customModulo(int nr1, int nr2);
+bool isProperCharacter(char character);

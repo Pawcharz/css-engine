@@ -20,7 +20,6 @@ const char ATTRIBUTE_SEPARATOR = ';';
 
 const char COMMAND_ARG_SEPARATOR = ',';
 
-const char TABULATOR = '\t';
 
 const MyString SECTIONS_READER_ACTIVATOR("****", 4);
 const MyString COMMANDS_READER_ACTIVATOR("????", 4);

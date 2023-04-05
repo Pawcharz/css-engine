@@ -2,6 +2,7 @@
 
 using namespace std;
 
+
 MyString::MyString() : length(0), lengthWithBuffer(0), characters(nullptr) {
 
 }

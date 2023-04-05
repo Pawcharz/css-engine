@@ -1,9 +1,16 @@
 #include "custom_utlis.h";
 
-int customModulo(int nr1, int nr2) {
-	if (nr2 == 0) {
-		return 0;
+bool isProperCharacter(char character) {
+	int asciiCode = character;
+	int spaceAsciiCode = ' ';
+
+	if (character == EOF || character == NEW_LINE_CHARACTER || character == TABULATOR || asciiCode == 13) {
+		return true;
 	}
 
-	return nr1 % nr2;
+	if (asciiCode >= spaceAsciiCode) {
+		return true;
+	}
+
+	return false;
 }

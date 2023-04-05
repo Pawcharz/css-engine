@@ -1,7 +1,5 @@
 #include "Reader.h"
 
-using namespace std;
-
 Reader::Reader() : mode{ SECTIONS } {
 
 	sectionsTemp = new TemporarySections();
@@ -19,13 +17,21 @@ void Reader::ReadSelectors() {
 	if (currentChar == SELECTORS_SEPARATOR || currentChar == CSS_SECTION_OPEN_CHAR) {
 		sectionsTemp->selector->TrimEdgeWhiteSpaces();
 
-		if (sectionsTemp->selector->IsEmpty()) {
+		/*if (sectionsTemp->selector->IsEmpty()) {
 			sectionsTemp->selector = new MyString("*", 1);
 		}
 
 		sectionsTemp->section->AssignSelector(sectionsTemp->selector);
 
-		sectionsTemp->selector->Reset();// = new MyString();
+		sectionsTemp->selector->Reset();*/
+
+		if (!sectionsTemp->selector->IsEmpty()) {
+			sectionsTemp->section->AssignSelector(sectionsTemp->selector);
+
+			sectionsTemp->selector->Reset();
+		}
+
+		
 
 		if (currentChar == CSS_SECTION_OPEN_CHAR) {
 
@@ -166,7 +172,7 @@ void Reader::ReadCommands() {
 		return;
 	}
 
-	else if (currentChar == NEW_LINE_CHARACTER) {
+	else if (currentChar == NEW_LINE_CHARACTER || currentChar == EOF) {
 		//cout << "--->" << commandsTemp->parts[0] << "," << commandsTemp->parts[1] << "," << commandsTemp->parts[2] << endl;
 		ExecuteCommand();
 
@@ -182,11 +188,8 @@ void Reader::ReadCommands() {
 }
 
 void Reader::ReadAll() {
-	//mode = COMMANDS; //Remove after testing
 
-	//currentChar = getchar();
-
-	while (currentChar != EOF) {
+	while (true) {
 
 		currentChar = getchar();
 
@@ -197,6 +200,10 @@ void Reader::ReadAll() {
 			else {
 				ReadCommands();
 			}
+		}
+
+		if (currentChar == EOF) {
+			return;
 		}
 	};
 }

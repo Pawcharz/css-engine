@@ -353,7 +353,7 @@ public:
 	}
 
 	void RemoveNode(ListNode* node) {
-		if (node == tail) {
+		if (head == tail) {
 			head = nullptr;
 			tail = nullptr;
 		}

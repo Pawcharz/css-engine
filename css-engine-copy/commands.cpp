@@ -3,9 +3,7 @@
 void Reader::Command_CountSections() {
 	int count = sectionsList->GetElementsCount();
 
-	//if (count > 0) {
-		cout << COMMAND_COUNT << " == " << count << endl;
-	//}
+	cout << COMMAND_COUNT << " == " << count << endl;
 }
 
 void Reader::Command_CountSelectors() {
@@ -17,9 +15,8 @@ void Reader::Command_CountSelectors() {
 	}
 
 	int selectorCount = found->GetSelectorsCount();
-	if (selectorCount > 0) {
-		cout << sectionNumber << ",S,? == " << selectorCount << endl;
-	}
+
+	cout << sectionNumber << ",S,? == " << selectorCount << endl;
 }
 
 void Reader::Command_CountAttributes() {
@@ -31,9 +28,8 @@ void Reader::Command_CountAttributes() {
 	}
 
 	int attributeCount = found->GetAttributesCount();
-	if (attributeCount > 0) {
-		cout << sectionNumber << ",A,? == " << attributeCount << endl;
-	}
+	
+	cout << sectionNumber << ",A,? == " << attributeCount << endl;
 }
 
 void Reader::Command_PrintSelector() {
@@ -81,25 +77,21 @@ void Reader::Command_CountAttributeOccurences() {
 
 	while (iterator != nullptr)
 	{
-		//Attribute* foundAttribute = FindAttributeByName(attributeName, iterator); //iterator->FindAttributeByName(attributeName);
 
 		for (int i = 0; i <= iterator->lastNonemptyIndex; i++)
 		{
 			Section* element = &iterator->data[i];
-			Attribute* foundAttribute = element->GetAttribute(attributeName);// FindAttributeByName(attributeName, );
+			Attribute* foundAttribute = element->GetAttribute(attributeName);
 
 			if (foundAttribute != nullptr) {
 				counter += 1;
 			}
-
 		}
 		
 		iterator = iterator->next;
 	}
 
-	//if (counter > 0) {
 	cout << attributeName << ",A,?" << " == " << counter << endl;
-	//}
 }
 
 void Reader::Command_CountSelectorOccurences() {
@@ -114,8 +106,7 @@ void Reader::Command_CountSelectorOccurences() {
 		for (int i = 0; i <= iterator->lastNonemptyIndex; i++)
 		{
 			Section* element = &iterator->data[i];
-			MyString* foundSelector = element->GetSelector(selectorName);// FindAttributeByName(attributeName, );
-			//MyString* foundSelector = FindSelectorByName(selectorName, iterator);// iterator->FindSelectorByName(selectorName);
+			MyString* foundSelector = element->GetSelector(selectorName);
 
 			if (foundSelector != nullptr) {
 				counter += 1;
@@ -125,9 +116,7 @@ void Reader::Command_CountSelectorOccurences() {
 		iterator = iterator->next;
 	}
 
-	//if (counter > 0) {
 	cout << selectorName << ",S,?" << " == " << counter << endl;
-	//}
 }
 
 
@@ -160,10 +149,6 @@ void Reader::Command_PrintAttributeValueBySelector() {
 
 		iterator = iterator->previous;
 	}
-
-	/*if (foundAttribute != nullptr) {
-		cout << selectorName << ",A," << attributeName << " == " << foundAttribute->GetValue() << endl;
-	}*/
 }
 
 void Reader::Command_RemoveSection() {
