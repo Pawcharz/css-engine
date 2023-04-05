@@ -17,23 +17,18 @@ public:
 	~Section();
 
 
-	//void AddSelector(MyString& selector);
-
-	//void AddAttribute(Attribute& attribute);
-
-
 	void AssignSelector(MyString* selectorPtr);
 
 	void AssignAttribute(Attribute* attribute);
 
 	void Reset();
 
-	bool IsEmpty();
+	bool IsEmpty() const;
 
 
-	int GetSelectorsCount();
+	int GetSelectorsCount() const;
 
-	int GetAttributesCount();
+	int GetAttributesCount() const;
 
 
 	MyString* GetSelector(int index);

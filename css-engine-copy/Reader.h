@@ -67,7 +67,7 @@ private:
 	List<Section>* sectionsList;
 
 
-	void Command_CountSections();
+	void Command_CountSections() const;
 
 
 	void Command_CountSelectors();

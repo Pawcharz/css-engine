@@ -28,10 +28,10 @@ public:
 	void Reset();
 
 
-	bool IsEmpty();
+	bool IsEmpty() const;
 
-	bool DoesMatchName(Attribute* other);
-	bool DoesMatchName(MyString& otherName);
+	bool DoesMatchName(Attribute* other) const;
+	bool DoesMatchName(MyString& otherName) const;
 
 
 

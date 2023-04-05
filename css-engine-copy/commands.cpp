@@ -1,6 +1,6 @@
 #include "Reader.h"
 
-void Reader::Command_CountSections() {
+void Reader::Command_CountSections() const {
 	int count = sectionsList->GetElementsCount();
 
 	cout << COMMAND_COUNT << " == " << count << endl;

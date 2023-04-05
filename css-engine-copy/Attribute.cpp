@@ -44,7 +44,7 @@ void Attribute::Trim() {
 }
 
 
-bool Attribute::IsEmpty() {
+bool Attribute::IsEmpty() const {
 	if (name->GetLength() == 0 && value->GetLength() == 0) {
 		return true;
 	}
@@ -52,14 +52,14 @@ bool Attribute::IsEmpty() {
 	return false;
 }
 
-bool Attribute::DoesMatchName(Attribute* other) {
+bool Attribute::DoesMatchName(Attribute* other) const {
 	if (name->IsEqual(*other->name)) {
 		return true;
 	}
 	return false;
 }
 
-bool Attribute::DoesMatchName(MyString& otherName) {
+bool Attribute::DoesMatchName(MyString& otherName) const {
 	if (name->IsEqual(otherName)) {
 		return true;
 	}
