@@ -127,8 +127,6 @@ void Reader::Command_PrintAttributeValueBySelector() {
 
 	List<Section>::ListNode* iterator = sectionsList->GetTail();
 
-	Attribute* foundAttribute = nullptr;
-
 	while (iterator != nullptr)
 	{
 		for (int i = iterator->lastNonemptyIndex; i >= 0; i--)

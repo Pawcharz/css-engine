@@ -13,22 +13,6 @@ private:
 
 	int nodeDataSize;
 
-	void AddNode(T& data) {
-		ListNode* newNode = new ListNode(nodeDataSize);
-		newNode->AddElement(data);
-
-		if (tail == nullptr) {
-			head = newNode;
-			tail = newNode;
-
-			return;
-		}
-
-		tail->next = newNode;
-		newNode->previous = tail;
-		tail = newNode;
-	}
-
 	void AssignNode(T* data) {
 		ListNode* newNode = new ListNode(nodeDataSize);
 		newNode->AssignElement(data);
@@ -201,26 +185,6 @@ public:
 		nodeDataSize = 1;
 	}
 
-	List(List& other) {
-		nodeDataSize = other.nodeDataSize;
-
-		if (other.head == nullptr) {
-			head = nullptr;
-			tail = nullptr;
-
-			return;
-		}
-
-		//head = new ListNode(*other.head);
-
-		ListNode* iteratorOther = other.head;
-		while (iteratorOther != nullptr)
-		{
-			AssignElement(iteratorOther->data);
-			iteratorOther = iteratorOther->next;
-		}
-	}
-
 	List(int nodeDataSize): nodeDataSize(nodeDataSize) {
 		head = nullptr;
 		tail = nullptr;
@@ -287,7 +251,7 @@ public:
 		tail->AssignElement(attribute);
 	}
 
-	int GetElementsCount() {
+	int GetElementsCount() const {
 		int counter = 0;
 		ListNode* iterator = head;
 		while (iterator != nullptr)
@@ -336,8 +300,6 @@ public:
 						bool wereRemoved = iterator->RemoveElement(i);
 
 						if (wereRemoved && iterator->dataPopulated == 0) {
-							//cout << "REMOVE NODE" << endl;
-							// ADD - remove node !!!
 							RemoveNode(iterator);
 						}
 						return wereRemoved;
@@ -365,7 +327,6 @@ public:
 		}
 
 		delete node;
-		node = nullptr;
 		return;
 	}
 

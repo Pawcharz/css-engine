@@ -18,12 +18,12 @@ private:
 	friend ostream& operator<<(ostream& ostr, const MyString& str);
 	friend ostream& operator<<(ostream& ostr, MyString& str);
 
-	int GetLengthWithBuffer(int lengthToUpdate);
+	static int GetLengthWithBuffer(int lengthToUpdate);
 
 public:
 	MyString();
 
-	MyString(const char* CharactersArg, int length);
+	MyString(const char* charactersArg, int length);
 
 	MyString(MyString& other);
 
@@ -36,22 +36,21 @@ public:
 
 	char& operator[](int index);
 
-	bool IsEmpty();
+	bool IsEmpty() const;
 
-	bool IsEqual(MyString& other);
-	bool IsEqual(const char* CharactersArg, int length);
-
-	bool IsEqual(const MyString& other);
+	bool IsEqual(MyString& other) const;
+	bool IsEqual(const MyString& other) const;
+	bool IsEqual(const char* otherCharacters, int otherLength) const;
 
 	void Reset();
 
 	void TrimEdgeWhiteSpaces();
 
-	int GetLength();
+	int GetLength() const;
 
 
-	bool isNumerical();
+	bool isNumerical() const;
 
-	int ToInteger();
+	int ToInteger() const;
 };
 

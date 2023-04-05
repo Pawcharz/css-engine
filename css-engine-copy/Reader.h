@@ -93,6 +93,8 @@ private:
 public:
 	Reader();
 
+	~Reader();
+
 	void ReadSections();
 
 	void ReadSelectors();

@@ -1,4 +1,4 @@
-#include "custom_utlis.h";
+#include "custom_utlis.h"
 
 bool shouldIgnoreCharacter(char character) {
 	int asciiCode = character;

@@ -100,9 +100,6 @@ bool RemoveAttributeByName(MyString& attributeName, List<Attribute>* list) {
 			if (!iterator->data[i].IsEmpty()) {
 
 				if (iterator->data[i].DoesMatchName(attributeName)) {
-
-					
-					//list->RemoveElement(index); // FIX - could be optimised -> repeating the same code 2 times
 					return iterator->RemoveElement(i);
 				}
 

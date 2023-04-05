@@ -3,7 +3,7 @@
 using namespace std;
 
 
-MyString::MyString() : length(0), lengthWithBuffer(0), characters(nullptr) {
+MyString::MyString() : characters(nullptr), lengthWithBuffer(0), length(0) {
 
 }
 
@@ -99,7 +99,7 @@ int MyString::GetLengthWithBuffer(int lengthToUpdate) {
 }
 
 
-bool MyString::IsEmpty() {
+bool MyString::IsEmpty() const {
     if (length > 0) {
         return false;
     }
@@ -107,7 +107,7 @@ bool MyString::IsEmpty() {
     return true;
 }
 
-bool MyString::IsEqual(MyString& other) {
+bool MyString::IsEqual(MyString& other) const {
     if (other.length != length) {
         return false;
     }
@@ -122,7 +122,7 @@ bool MyString::IsEqual(MyString& other) {
     return true;
 }
 
-bool MyString::IsEqual(const MyString& other) {
+bool MyString::IsEqual(const MyString& other) const {
     if (other.length != length) {
         return false;
     }
@@ -137,7 +137,7 @@ bool MyString::IsEqual(const MyString& other) {
     return true;
 }
 
-bool MyString::IsEqual(const char* otherCharacters, int otherLength) {
+bool MyString::IsEqual(const char* otherCharacters, int otherLength) const {
     if (otherLength != length) {
         return false;
     }
@@ -149,16 +149,6 @@ bool MyString::IsEqual(const char* otherCharacters, int otherLength) {
         }
     }
 
-    return true;
-}
-
-bool MyString::isNumerical() {
-    for (int i = 0; i < length; i++)
-    {
-        if (characters[i] - '0' < 0 || characters[i] - '0' > 9) {
-            return false;
-        }
-    }
     return true;
 }
 
@@ -223,7 +213,7 @@ void MyString::TrimEdgeWhiteSpaces() {
     delete[] charactersTemp;
 }
 
-int MyString::GetLength() {
+int MyString::GetLength() const {
     return length;
 }
 
@@ -243,7 +233,17 @@ ostream& operator<<(ostream& ostr, const MyString& str) {
 }
 
 
-int MyString::ToInteger() {
+bool MyString::isNumerical() const {
+    for (int i = 0; i < length; i++)
+    {
+        if (characters[i] - '0' < 0 || characters[i] - '0' > 9) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int MyString::ToInteger() const {
     int number = 0;
 
     int powerOf10 = 1;

@@ -11,6 +11,15 @@ Reader::Reader() : mode{ SECTIONS } {
 	sectionsList = new List<Section>(BULK_SECTIONS_SIZE);
 }
 
+Reader::~Reader() {
+
+	delete sectionsTemp;
+	delete commandsTemp;
+	delete sectionsList;
+	//delete sectionsTemp;
+}
+
+
 
 void Reader::ReadSelectors() {
 
