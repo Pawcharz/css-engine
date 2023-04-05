@@ -25,7 +25,6 @@ void Section::AssignAttribute(Attribute* attribute) {
 		attributes = new List<Attribute>();
 	}
 
-	//attributes->AssignElement(attribute);
 	attributes->AssignAttributeElement(attribute);
 }
 
@@ -39,7 +38,6 @@ void Section::Reset() {
 
 	selectors = nullptr;
 	attributes = nullptr;
-
 }
 
 bool Section::IsEmpty() const {
@@ -79,7 +77,7 @@ Attribute* Section::GetAttribute(MyString& attributeName) {
 		return nullptr;
 	}
 
-	return FindAttributeByName(attributeName, attributes);// attributes->FindAttributeWithName(attributeName);
+	return FindAttributeByName(attributeName, attributes);
 }
 
 MyString* Section::GetSelector(MyString& selectorName) {

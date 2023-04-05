@@ -67,7 +67,6 @@ void Reader::Command_PrintAttributeValue() {
 }
 
 
-// Possible bug/tech debt -> dataPopulated
 void Reader::Command_CountAttributeOccurences() {
 	MyString attributeName = commandsTemp->parts[0];
 
@@ -120,7 +119,6 @@ void Reader::Command_CountSelectorOccurences() {
 }
 
 
-// Possible bug/tech debt -> dataPopulated
 void Reader::Command_PrintAttributeValueBySelector() {
 	MyString selectorName = commandsTemp->parts[0];
 	MyString attributeName = commandsTemp->parts[2];

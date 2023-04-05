@@ -5,8 +5,8 @@ MyString* FindSelectorByName(MyString& selectorName, List<MyString>::ListNode* n
 
 	for (int i = 0; i <= node->lastNonemptyIndex; i++)
 	{
-		MyString current = node->data[i];
-		if (current.IsEqual(selectorName)) {
+		MyString* current = &node->data[i];
+		if (current->IsEqual(selectorName)) {
 			return &node->data[i];
 		}
 	}
@@ -50,8 +50,8 @@ Attribute* FindAttributeByName(MyString& attributeName, List<Attribute>::ListNod
 
 	for (int i = 0; i <= node->lastNonemptyIndex; i++)
 	{
-		Attribute current = node->data[i];
-		if (current.DoesMatchName(attributeName)) {
+		Attribute* current = &node->data[i];
+		if (current->DoesMatchName(attributeName)) {
 			return &node->data[i];
 		}
 	}

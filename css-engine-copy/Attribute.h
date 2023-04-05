@@ -34,7 +34,5 @@ public:
 	bool DoesMatchName(MyString& otherName) const;
 
 
-
 	MyString& GetValue();
 };
-

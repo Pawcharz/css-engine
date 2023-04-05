@@ -16,7 +16,6 @@ Reader::~Reader() {
 	delete sectionsTemp;
 	delete commandsTemp;
 	delete sectionsList;
-	//delete sectionsTemp;
 }
 
 
@@ -25,14 +24,6 @@ void Reader::ReadSelectors() {
 
 	if (currentChar == SELECTORS_SEPARATOR || currentChar == CSS_SECTION_OPEN_CHAR) {
 		sectionsTemp->selector->TrimEdgeWhiteSpaces();
-
-		/*if (sectionsTemp->selector->IsEmpty()) {
-			sectionsTemp->selector = new MyString("*", 1);
-		}
-
-		sectionsTemp->section->AssignSelector(sectionsTemp->selector);
-
-		sectionsTemp->selector->Reset();*/
 
 		if (!sectionsTemp->selector->IsEmpty()) {
 			sectionsTemp->section->AssignSelector(sectionsTemp->selector);
@@ -61,7 +52,6 @@ void Reader::ReadSelectors() {
 void Reader::ReadAttributes() {
 
 	if (currentChar == ATTRIBUTE_SEPARATOR) {
-
 
 		sectionsTemp->attribute->Trim();
 
@@ -168,8 +158,6 @@ void Reader::ExecuteCommand() {
 	}
 	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("D", 1) && !commandsTemp->parts[2].isNumerical()) {
 		Command_RemoveAttribute();
-		// RemoveAttributeFromSection(sectionIndex, attributeName)
-		//cout << "RemoveAttributeFromSection(sectionIndex, attributeName)" << endl;
 	}
 }
 
@@ -182,11 +170,9 @@ void Reader::ReadCommands() {
 	}
 
 	else if (currentChar == NEW_LINE_CHARACTER || currentChar == EOF) {
-		//cout << "--->" << commandsTemp->parts[0] << "," << commandsTemp->parts[1] << "," << commandsTemp->parts[2] << endl;
 		ExecuteCommand();
 
 		CleanCommands();
-
 	}
 	else if (currentChar == COMMAND_ARG_SEPARATOR && commandsTemp->currentPartIndex < 2) {
 		commandsTemp->currentPartIndex += 1;
