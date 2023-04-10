@@ -1,4 +1,6 @@
 #include "Section.h"
+#include "custom_utlis.h"
+#include "list_utlis.h"
 
 Section::Section() {
 	selectors = nullptr;
@@ -89,5 +91,13 @@ Attribute* Section::GetAttribute(MyString& attributeName) {
 		return nullptr;
 	}
 
-	return attributes->GetAttributeWithName(attributeName);
+	return FindAttributeByName(attributeName, attributes);// attributes->FindAttributeWithName(attributeName);
+}
+
+MyString* Section::GetSelector(MyString& selectorName) {
+	if (selectors == nullptr) {
+		return nullptr;
+	}
+
+	return FindSelectorByName(selectorName, selectors);
 }

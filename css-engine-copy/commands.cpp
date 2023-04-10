@@ -70,18 +70,98 @@ void Reader::Command_PrintAttributeValue() {
 	cout << sectionNumber << ",A," << attributeName << " == " << foundAttribute->GetValue() << endl;
 }
 
+
+// Possible bug/tech debt -> dataPopulated
 void Reader::Command_CountAttributeOccurences() {
-	MyString selectorName = commandsTemp->parts[0];
+	MyString attributeName = commandsTemp->parts[0];
 
 	int counter = 0; 
 
-	/*while (iterator != nullptr)
-	{
-		counter += iterator->dataPopulated;
-		iterator = iterator->next;
-	}*/
+	List<Section>::ListNode* iterator = sectionsList->GetHead();
 
-	if (counter > 0) {
-		cout << selectorName << ",S,?" << " == " << counter << endl;
+	while (iterator != nullptr)
+	{
+		//Attribute* foundAttribute = FindAttributeByName(attributeName, iterator); //iterator->FindAttributeByName(attributeName);
+
+		for (int i = 0; i < iterator->dataPopulated; i++)
+		{
+			Section* element = &iterator->data[i];
+			Attribute* foundAttribute = element->GetAttribute(attributeName);// FindAttributeByName(attributeName, );
+
+			if (foundAttribute != nullptr) {
+				counter += 1;
+			}
+
+		}
+		
+		iterator = iterator->next;
 	}
+
+	//if (counter > 0) {
+	cout << attributeName << ",A,?" << " == " << counter << endl;
+	//}
+}
+
+void Reader::Command_CountSelectorOccurences() {
+	MyString selectorName = commandsTemp->parts[0];
+
+	int counter = 0;
+
+	List<Section>::ListNode* iterator = sectionsList->GetHead();
+
+	while (iterator != nullptr)
+	{
+		for (int i = 0; i < iterator->dataPopulated; i++)
+		{
+			Section* element = &iterator->data[i];
+			MyString* foundSelector = element->GetSelector(selectorName);// FindAttributeByName(attributeName, );
+			//MyString* foundSelector = FindSelectorByName(selectorName, iterator);// iterator->FindSelectorByName(selectorName);
+
+			if (foundSelector != nullptr) {
+				counter += 1;
+			}
+		}
+
+		iterator = iterator->next;
+	}
+
+	//if (counter > 0) {
+	cout << selectorName << ",S,?" << " == " << counter << endl;
+	//}
+}
+
+
+// Possible bug/tech debt -> dataPopulated
+void Reader::Command_PrintAttributeValueBySelector() {
+	MyString selectorName = commandsTemp->parts[0];
+	MyString attributeName = commandsTemp->parts[2];
+
+	List<Section>::ListNode* iterator = sectionsList->GetTail();
+
+	Attribute* foundAttribute = nullptr;
+
+	while (iterator != nullptr)
+	{
+		for (int i = iterator->dataPopulated - 1; i >= 0; i--)
+		{
+			Section* element = &iterator->data[i];
+			MyString* foundSelector = element->GetSelector(selectorName);
+
+			if (foundSelector != nullptr) {
+
+				Attribute* foundAttribute = element->GetAttribute(attributeName);
+
+				if (foundAttribute != nullptr) {
+					cout << selectorName << ",E," << attributeName << " == " << foundAttribute->GetValue() << endl;
+					return;
+				}
+			}
+		}
+
+		iterator = iterator->previous;
+	}
+
+	/*if (foundAttribute != nullptr) {
+		cout << selectorName << ",A," << attributeName << " == " << foundAttribute->GetValue() << endl;
+	}*/
 }

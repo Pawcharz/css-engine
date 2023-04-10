@@ -1,7 +1,8 @@
 #pragma once
+
 #include <iostream>
-#include "custom_utlis.h"
 #include "Attribute.h"
+#include "custom_utlis.h"
 
 using namespace std;
 
@@ -11,12 +12,45 @@ class List
 private:
 
 	int nodeDataSize;
-	
+
+	void AddNode(T& data) {
+		ListNode* newNode = new ListNode(nodeDataSize);
+		newNode->AddElement(data);
+
+		if (tail == nullptr) {
+			head = newNode;
+			tail = newNode;
+
+			return;
+		}
+
+		tail->next = newNode;
+		newNode->previous = tail;
+		tail = newNode;
+	}
+
+	void AssignNode(T* data) {
+		ListNode* newNode = new ListNode(nodeDataSize);
+		newNode->AssignElement(data);
+
+		if (tail == nullptr) {
+			head = newNode;
+			tail = newNode;
+
+			return;
+		}
+
+		tail->next = newNode;
+		newNode->previous = tail;
+		tail = newNode;
+	}
+
+public:
 	class ListNode
 	{
 	public:
-		
-		
+
+
 		ListNode* next;
 		ListNode* previous;
 
@@ -67,7 +101,7 @@ private:
 			return *this;
 		}
 
-		ListNode(int dataSize): dataSize(dataSize) {
+		ListNode(int dataSize) : dataSize(dataSize) {
 			previous = nullptr;
 			next = nullptr;
 
@@ -132,7 +166,7 @@ private:
 		}
 
 		// Assuming some elements exist
-		void RemoveLastElement() {
+		/*void RemoveLastElement() {
 
 			dataPopulated -= 1;
 
@@ -144,45 +178,14 @@ private:
 				delete[] data;
 				data = nullptr;
 			}
-		}
+		}*/
+
 	};
 
+private:
 	ListNode* head;
 	ListNode* tail;
-
-
-	void AddNode(T& data) {
-		ListNode* newNode = new ListNode(nodeDataSize);
-		newNode->AddElement(data);
-
-		if (tail == nullptr) {
-			head = newNode;
-			tail = newNode;
-
-			return;
-		}
-
-		tail->next = newNode;
-		newNode->previous = tail;
-		tail = newNode;
-	}
-
-	void AssignNode(T* data) {
-		ListNode* newNode = new ListNode(nodeDataSize);
-		newNode->AssignElement(data);
-
-		if (tail == nullptr) {
-			head = newNode;
-			tail = newNode;
-
-			return;
-		}
-
-		tail->next = newNode;
-		newNode->previous = tail;
-		tail = newNode;
-	}
-
+	
 public:
 	List() {
 		head = nullptr;
@@ -360,30 +363,22 @@ public:
 				return &iterator->data[exactIndex];
 			}
 
-			nodesCounter += iterator->dataPopulated;
+			nodesCounter += 1;
 			iterator = iterator->next;
 		}
 
 		return nullptr;
 	}
 
-	// FIX - Possible bug/tech debt -> dataPopulated
-	Attribute* GetAttributeWithName(MyString& attributeName) {
-		int nodesCounter = 0;
-		ListNode* iterator = head;
-		while (iterator != nullptr)
-		{
-			for (int i = 0; i < iterator->dataPopulated; i++)
-			{
-				if (iterator->data[i].DoesMatchName(attributeName)) {
-					return &iterator->data[i];
-				}
-			}
-
-			nodesCounter += iterator->dataPopulated;
-			iterator = iterator->next;
-		}
-
-		return nullptr;
+	
+	ListNode* GetHead() {
+		return head;
 	}
+	
+	ListNode* GetTail() {
+		return tail;
+	}
+
+	
 };
+

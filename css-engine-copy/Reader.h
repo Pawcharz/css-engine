@@ -4,6 +4,7 @@
 #include "List.h"
 #include "Section.h"
 #include "custom_utlis.h"
+#include "list_utlis.h"
 
 #include "MyString.h"
 #include "List.h"
@@ -79,9 +80,9 @@ private:
 	void Command_PrintAttributeValue();
 
 
-	void Command_CountAttributeOccurences();
-
 	void Command_CountSelectorOccurences();
+
+	void Command_CountAttributeOccurences();
 
 	void Command_PrintAttributeValueBySelector();
 

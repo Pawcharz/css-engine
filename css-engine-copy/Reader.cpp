@@ -138,18 +138,20 @@ void Reader::ExecuteCommand() {
 	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("A", 1) && !commandsTemp->parts[2].isNumerical()) {
 		Command_PrintAttributeValue();
 	}
+	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("S", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
+		Command_CountSelectorOccurences();
+		// PrintCountOfSelectorOccurences(name)
+		//cout << "PrintCountOfSelectorOccurences(name)" << endl;
+	}
 	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("A", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
 		Command_CountAttributeOccurences();
 		// PrintCountOfAttribute(name)
-		cout << "PrintCountOfAttribute(name)" << endl;
-	}
-	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("S", 1) && commandsTemp->parts[2].IsEqual("?", 1)) {
-		// PrintCountOfSelectorOccurences(name)
-		cout << "PrintCountOfSelectorOccurences(name)" << endl;
+		//cout << "PrintCountOfAttribute(name)" << endl;
 	}
 	else if (!commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("E", 1) && !commandsTemp->parts[2].isNumerical()) {
+		Command_PrintAttributeValueBySelector();
 		// PrintValueOfAttributeForSelector(attributeName, selectorName)
-		cout << "PrintValueOfAttributeForSelector(attributeName, selectorName)" << endl;
+		//cout << "PrintValueOfAttributeForSelector(attributeName, selectorName)" << endl;
 	}
 	else if (commandsTemp->parts[0].isNumerical() && commandsTemp->parts[1].IsEqual("D", 1) && commandsTemp->parts[2].IsEqual("*", 1)) {
 		// RemoveSectionWithNumber(number)
