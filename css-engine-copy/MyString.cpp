@@ -8,13 +8,19 @@ MyString::MyString() : length(0), lengthWithBuffer(0), characters(nullptr) {
 
 }
 
-MyString::MyString(const char* CharactersArg, int length): length(length) {
+MyString::MyString(const char* charactersArg, int length): length(length) {
+    if (length == 0) {
+        lengthWithBuffer = 0;
+        characters = nullptr;
+        return;
+    }
+
     lengthWithBuffer = GetLengthWithBuffer(length);
     characters = new char[lengthWithBuffer];
 
     for (int i = 0; i < length; i++)
     {
-        characters[i] = CharactersArg[i];
+        characters[i] = charactersArg[i];
     }
 }
 
@@ -30,10 +36,9 @@ MyString::MyString(MyString& other) : length(other.length) {
 MyString& MyString::operator=(MyString& other) {
     MyString tmp = other;
 
-    swap(characters, tmp.characters);
-
-    swap(length, tmp.length);
-    swap(lengthWithBuffer, tmp.lengthWithBuffer);
+    customSwap(&characters, &tmp.characters);
+    length = tmp.length;
+    lengthWithBuffer = tmp.lengthWithBuffer;
     return *this;
 }
 
@@ -56,13 +61,13 @@ char& MyString::operator[](int index) {
     return characters[index];
 }
 
-void MyString::operator+=(char character) {
+MyString& MyString::operator+=(char character) {
     int newLength = length + 1;
 
     if (newLength < lengthWithBuffer) {
         characters[length] = character;
         length = newLength;
-        return;
+        return *this;
     }
 
 
@@ -76,10 +81,12 @@ void MyString::operator+=(char character) {
 
     charactersTmp[length] = character;
 
-    swap(characters, charactersTmp);
+    customSwap(&characters, &charactersTmp);
     length = newLength;
 
     delete[] charactersTmp;
+
+    return *this;
 }
 
 int MyString::GetLengthWithBuffer(int lengthToUpdate) {
@@ -131,8 +138,35 @@ bool MyString::IsEqual(const MyString& other) {
     return true;
 }
 
+bool MyString::IsEqual(const char* otherCharacters, int otherLength) {
+    if (otherLength != length) {
+        return false;
+    }
+
+    for (int i = 0; i < length; i++)
+    {
+        if (otherCharacters[i] != characters[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool MyString::isNumerical() {
+    for (int i = 0; i < length; i++)
+    {
+        if (characters[i] - '0' < 0 || characters[i] - '0' > 9) {
+            return false;
+        }
+    }
+    return true;
+}
+
 void MyString::Reset() {
-    delete[] characters;
+    if (characters != nullptr) {
+        delete[] characters;
+    }
     characters = nullptr;
     length = 0;
     lengthWithBuffer = 0;
@@ -183,9 +217,50 @@ void MyString::TrimEdgeWhiteSpaces() {
         charactersTemp[i] = characters[firstIndex + i];
     }
 
-    swap(characters, charactersTemp);
+    customSwap(&characters, &charactersTemp);
     length = newLength;
     lengthWithBuffer = GetLengthWithBuffer(length);
 
     delete[] charactersTemp;
+}
+
+int MyString::GetLength() {
+    return length;
+}
+
+ostream& operator<<(ostream& ostr, MyString& str) {
+    for (int i = 0; i < str.length; i++)
+    {
+        ostr << str.characters[i];
+    }
+    return ostr;
+}
+ostream& operator<<(ostream& ostr, const MyString& str) {
+    for (int i = 0; i < str.length; i++)
+    {
+        ostr << str.characters[i];
+    }
+    return ostr;
+}
+
+
+int MyString::ToInteger() {
+    int number = 0;
+
+    int powerOf10 = 1;
+
+    for (int i = length-1; i >= 0; i--)
+    {
+        int digit = (int)(characters[i] - '0');
+
+        if (digit < 0 || digit > 9) {
+            return -1;
+        }
+
+        number += powerOf10 * digit;
+
+        powerOf10 *= 10;
+    }
+
+    return number;
 }
