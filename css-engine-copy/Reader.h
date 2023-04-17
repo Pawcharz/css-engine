@@ -20,7 +20,6 @@ const char ATTRIBUTE_SEPARATOR = ';';
 
 const char COMMAND_ARG_SEPARATOR = ',';
 
-const char TABULATOR = '\t';
 
 const MyString SECTIONS_READER_ACTIVATOR("****", 4);
 const MyString COMMANDS_READER_ACTIVATOR("????", 4);
@@ -33,78 +32,79 @@ const int COMMAND_PARTS_COUNT = 3;
 
 
 enum ReaderMode {
-	SECTIONS,
-	COMMANDS
+    SECTIONS,
+    COMMANDS
 };
 
 enum SectionReadingStage {
-	SELECTORS,
-	ATTRIBUTES
+    SELECTORS,
+    ATTRIBUTES
 };
 
 class Reader
 {
 private:
-	struct TemporarySections {
-		Section* section = new Section();
-		SectionReadingStage sectionReadingStage = SELECTORS;
-		MyString* selector = new MyString();
+    struct TemporarySections {
+        Section* section = new Section();
+        SectionReadingStage sectionReadingStage = SELECTORS;
+        MyString* selector = new MyString();
 
-		AttributePart attributeReadingStage = NAME;
+        AttributePart attributeReadingStage = NAME;
 
-		Attribute* attribute = new Attribute();
-	}* sectionsTemp;
+        Attribute* attribute = new Attribute();
+    }*sectionsTemp;
 
-	struct TemporaryCommands {
-		MyString* parts = new MyString[COMMAND_PARTS_COUNT]();
+    struct TemporaryCommands {
+        MyString* parts = new MyString[COMMAND_PARTS_COUNT]();
 
-		int currentPartIndex = 0;
-	}* commandsTemp;
+        int currentPartIndex = 0;
+    }*commandsTemp;
 
-	ReaderMode mode;
+    ReaderMode mode;
 
-	char currentChar;
+    char currentChar;
 
-	List<Section>* sectionsList;
-
-
-	void Command_CountSections();
+    List<Section>* sectionsList;
 
 
-	void Command_CountSelectors();
-
-	void Command_CountAttributes();
-
-	void Command_PrintSelector();
-
-	void Command_PrintAttributeValue();
+    void Command_CountSections() const;
 
 
-	void Command_CountSelectorOccurences();
+    void Command_CountSelectors();
 
-	void Command_CountAttributeOccurences();
+    void Command_CountAttributes();
 
-	void Command_PrintAttributeValueBySelector();
+    void Command_PrintSelector();
+
+    void Command_PrintAttributeValue();
 
 
-	void Command_RemoveSection();
+    void Command_CountSelectorOccurences();
 
-	void Command_RemoveAttribute();
+    void Command_CountAttributeOccurences();
+
+    void Command_PrintAttributeValueBySelector();
+
+
+    void Command_RemoveSection();
+
+    void Command_RemoveAttribute();
 
 public:
-	Reader();
+    Reader();
 
-	void ReadSections();
+    ~Reader();
 
-	void ReadSelectors();
-	void ReadAttributes();
+    void ReadSections();
 
-	void ExecuteCommand();
-	void ReadCommands();
+    void ReadSelectors();
+    void ReadAttributes();
 
-	void ReadAll();
+    void ExecuteCommand();
+    void ReadCommands();
+
+    void ReadAll();
 
 
-	void CleanCommands();
+    void CleanCommands();
 };
-

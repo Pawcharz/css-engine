@@ -130,6 +130,7 @@
     <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="commands.cpp" />
     <ClCompile Include="css-engine-copy.cpp" />
+    <ClCompile Include="custom_utlis.cpp" />
     <ClCompile Include="list_utlis.cpp" />
     <ClCompile Include="MyString.cpp" />
     <ClCompile Include="Reader.cpp" />

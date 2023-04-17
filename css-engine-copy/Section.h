@@ -8,38 +8,35 @@
 class Section
 {
 private:
-	List<MyString>* selectors;
-	List<Attribute>* attributes;
+    List<MyString>* selectors;
+    List<Attribute>* attributes;
 
 public:
-	Section();
+    Section();
 
-	~Section();
-
-
-	//void AddSelector(MyString& selector);
-
-	//void AddAttribute(Attribute& attribute);
+    ~Section();
 
 
-	void AssignSelector(MyString* selectorPtr);
+    void AssignSelector(MyString* selectorPtr);
 
-	void AssignAttribute(Attribute* attribute);
+    void AssignAttribute(Attribute* attribute);
 
-	void Reset();
+    void Reset();
 
-
-	int GetSelectorsCount();
-
-	int GetAttributesCount();
+    bool IsEmpty() const;
 
 
-	MyString* GetSelector(int index);
+    int GetSelectorsCount() const;
 
-	Attribute* GetAttribute(MyString& attributeName);
+    int GetAttributesCount() const;
 
 
+    MyString* GetSelector(int index);
 
-	MyString* GetSelector(MyString& selectorName);
+    Attribute* GetAttribute(MyString& attributeName);
+
+
+    MyString* GetSelector(MyString& selectorName);
+
+    bool RemoveAttribute(MyString& attributeName);
 };
-

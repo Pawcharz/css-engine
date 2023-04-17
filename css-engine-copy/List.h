@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "Attribute.h"
 #include "custom_utlis.h"
+#include "Attribute.h"
 
 using namespace std;
 
@@ -11,374 +11,331 @@ class List
 {
 private:
 
-	int nodeDataSize;
+    int nodeDataSize;
 
-	void AddNode(T& data) {
-		ListNode* newNode = new ListNode(nodeDataSize);
-		newNode->AddElement(data);
+    void AssignNode(T* data) {
+        ListNode* newNode = new ListNode(nodeDataSize);
+        newNode->AssignElement(data);
 
-		if (tail == nullptr) {
-			head = newNode;
-			tail = newNode;
+        if (tail == nullptr) {
+            head = newNode;
+            tail = newNode;
 
-			return;
-		}
+            return;
+        }
 
-		tail->next = newNode;
-		newNode->previous = tail;
-		tail = newNode;
-	}
-
-	void AssignNode(T* data) {
-		ListNode* newNode = new ListNode(nodeDataSize);
-		newNode->AssignElement(data);
-
-		if (tail == nullptr) {
-			head = newNode;
-			tail = newNode;
-
-			return;
-		}
-
-		tail->next = newNode;
-		newNode->previous = tail;
-		tail = newNode;
-	}
+        tail->next = newNode;
+        newNode->previous = tail;
+        tail = newNode;
+    }
 
 public:
-	class ListNode
-	{
-	public:
+    class ListNode
+    {
+    private:
 
+        void UpdateDataPopulated() {
+            dataPopulated = 0;
 
-		ListNode* next;
-		ListNode* previous;
+            bool hasAlreadyEncounter = false;
 
-		T* data;
-		int dataSize;
-		int dataPopulated;
+            for (int i = dataSize - 1; i >= 0; i--)
+            {
+                if (!data[i].IsEmpty()) {
+                    if (!hasAlreadyEncounter) {
+                        lastNonemptyIndex = i;
+                    }
 
-		ListNode() {
-			previous = nullptr;
-			next = nullptr;
+                    dataPopulated += 1;
+                    hasAlreadyEncounter = true;
+                }
+            }
+        }
 
-			dataSize = 1;
-			dataPopulated = 0;
+    public:
 
-			data = nullptr;
-		}
+        ListNode* next;
+        ListNode* previous;
 
-		ListNode(ListNode& other) {
-			previous = nullptr;
-			next = nullptr;
+        T* data;
+        int dataSize;
 
-			dataSize = other.dataSize;
-			dataPopulated = other.dataPopulated;
+        int dataPopulated;
 
-			if (dataSize == 0) {
-				data = nullptr;
-				return;
-			}
+        int lastNonemptyIndex;
 
-			data = new T[dataSize];
-			for (int i = 0; i < dataPopulated; i++)
-			{
-				data[i] = other.data[i];
-			}
-		}
+        ListNode() {
+            previous = nullptr;
+            next = nullptr;
 
-		ListNode& operator=(ListNode& other) {
-			ListNode tmp = other;
+            dataSize = 1;
+            dataPopulated = 0;
+            lastNonemptyIndex = 0;
 
-			customSwap(next, tmp.next);
-			customSwap(previous, tmp.previous);
+            data = nullptr;
+        }
 
-			customSwap(data, tmp.data);
+        ListNode(ListNode& other) {
+            previous = nullptr;
+            next = nullptr;
 
-			dataSize = other.dataSize;
-			dataPopulated = other.dataPopulated;
+            dataSize = other.dataSize;
+            dataPopulated = other.dataPopulated;
+            lastNonemptyIndex = other.lastNonemptyIndex;
 
-			return *this;
-		}
+            if (dataSize == 0) {
+                data = nullptr;
+                return;
+            }
 
-		ListNode(int dataSize) : dataSize(dataSize) {
-			previous = nullptr;
-			next = nullptr;
+            data = new T[dataSize];
+            for (int i = 0; i <= lastNonemptyIndex; i++)
+            {
+                data[i] = other.data[i];
+            }
+        }
 
-			data = nullptr;
-			dataPopulated = 0;
-		}
+        ListNode& operator=(ListNode& other) {
+            ListNode tmp = other;
 
-		// Assuming the node is not full - otherwise => bad allocation
-		void AddElement(T& otherData) {
-			T* dataCopy = new T(otherData);
-			if (data == nullptr) {
-				data = new T[dataSize];
-				dataPopulated = 0;
-			}
-			data[dataPopulated] = *dataCopy;
-			dataPopulated += 1;
-		}
+            customSwap(&next, &tmp.next);
+            customSwap(&previous, &tmp.previous);
 
-		void AssignElement(T* otherDataPtr) {
-			if (data == nullptr) {
-				data = new T[dataSize];
-				dataPopulated = 0;
-			}
+            customSwap(&data, &tmp.data);
 
-			data[dataPopulated] = *otherDataPtr;
-			dataPopulated += 1;
-		}
+            dataSize = other.dataSize;
+            dataPopulated = other.dataPopulated;
+            lastNonemptyIndex = other.lastNonemptyIndex;
 
-		/*void AssignAttributeElement(Attribute* otherDataPtr) {
-			if (data == nullptr) {
-				data = new T[dataSize];
-				dataPopulated = 0;
-			}
+            return *this;
+        }
 
-			for (int i = 0; i < dataPopulated; i++)
-			{
-				if (((Attribute)data[i]).DoesMatchName(otherDataPtr)) {
-					data[i] = *otherDataPtr;
-					return;
-				}
-			}
+        ListNode(int dataSize) : dataSize(dataSize) {
+            previous = nullptr;
+            next = nullptr;
 
-			data[dataPopulated] = *otherDataPtr;
-			dataPopulated += 1;
-		}*/
+            data = nullptr;
+            dataPopulated = 0;
+            lastNonemptyIndex = INVALID_INDEX;
+        }
 
+        // Assuming the node is not full - otherwise => possibility of getting bad allocation
+        void AddElement(T& otherData) {
+            T* dataCopy = new T(otherData);
+            if (data == nullptr) {
+                data = new T[dataSize];
+                dataPopulated = 0;
+            }
+            lastNonemptyIndex += 1;
+            data[lastNonemptyIndex] = *dataCopy;
 
-		~ListNode() {
-			if (previous != nullptr) {
-				previous->next = nullptr;
-			}
+            dataPopulated += 1;
+        }
 
-			if (next != nullptr) {
-				next->previous = nullptr;
-			}
+        void AssignElement(T* otherDataPtr) {
+            if (data == nullptr) {
+                data = new T[dataSize];
+                dataPopulated = 0;
+            }
 
-			previous = nullptr;
-			next = nullptr;
+            lastNonemptyIndex += 1;
+            data[lastNonemptyIndex] = *otherDataPtr;
+            dataPopulated += 1;
+        }
 
-			delete[] data;
-			data = nullptr;
-		}
+        ~ListNode() {
+            if (previous != nullptr) {
+                previous->next = nullptr;
+            }
 
-		// Assuming some elements exist
-		/*void RemoveLastElement() {
+            if (next != nullptr) {
+                next->previous = nullptr;
+            }
 
-			dataPopulated -= 1;
+            previous = nullptr;
+            next = nullptr;
 
-			//Should be deleting old data --> FIX this error
-			delete& (data[dataPopulated]);
-			data[dataPopulated] = T();
+            delete[] data;
+            data = nullptr;
+        }
 
-			if (dataPopulated == 0) {
-				delete[] data;
-				data = nullptr;
-			}
-		}*/
+        bool RemoveElement(int index) {
 
-	};
+            if (data[index].IsEmpty()) {
+                return false;
+            }
+
+            data[index].Reset();
+
+            UpdateDataPopulated();
+            return true;
+        }
+
+    };
 
 private:
-	ListNode* head;
-	ListNode* tail;
-	
+    ListNode* head;
+    ListNode* tail;
+
 public:
-	List() {
-		head = nullptr;
-		tail = nullptr;
+    List() {
+        head = nullptr;
+        tail = nullptr;
 
-		nodeDataSize = 1;
-	}
+        nodeDataSize = 1;
+    }
 
-	List(List& other) {
-		nodeDataSize = other.nodeDataSize;
+    List(int nodeDataSize) : nodeDataSize(nodeDataSize) {
+        head = nullptr;
+        tail = nullptr;
+    }
 
-		if (other.head == nullptr) {
-			head = nullptr;
-			tail = nullptr;
-
-			return;
-		}
-
-		//head = new ListNode(*other.head);
-
-		ListNode* iteratorOther = other.head;
-		while (iteratorOther != nullptr)
-		{
-			AssignElement(iteratorOther->data);
-			iteratorOther = iteratorOther->next;
-		}
-	}
-
-	List(int nodeDataSize): nodeDataSize(nodeDataSize) {
-		head = nullptr;
-		tail = nullptr;
-	}
-
-	~List() {
-		while (tail != nullptr)
-		{
-			RemoveLastNode();
-		}
-	}
-
-	
-	/*void AddElement(T& data) {
-		if (tail == nullptr) {
-			ListNode* newNode = new ListNode(nodeDataSize);
-			newNode->AddElement(data);
-
-			head = newNode;
-			tail = newNode;
-
-			return;
-		}
-
-		if (tail->dataSize == tail->dataPopulated) {
-			AddNode(data);
-			
-			return;
-		}
-
-		tail->AddElement(data);
-	}*/
-
-	void AssignElement(T* data) {
-		if (tail == nullptr) {
-			ListNode* newNode = new ListNode(nodeDataSize);
-			newNode->AssignElement(data);
-
-			head = newNode;
-			tail = newNode;
-
-			return;
-		}
-
-		if (tail->dataSize == tail->dataPopulated) {
-			AssignNode(data);
-
-			return;
-		}
-
-		tail->AssignElement(data);
-	}
-	
-	//Should probably be replaced with some extention of template etc.
-	// Assuming that attributeNodes have maxSize == 1
-	void AssignAttributeElement(Attribute* attribute) {
-		if (tail == nullptr) {
-			ListNode* newNode = new ListNode(nodeDataSize);
-			newNode->AssignElement(attribute);
-
-			head = newNode;
-			tail = newNode;
-
-			return;
-		}
-
-		ListNode* iterator = head;
-		while (iterator != nullptr)
-		{
-			if (iterator->data != nullptr && ((Attribute)iterator->data[0]).DoesMatchName(attribute) ) {
-
-				iterator->data[0] = *attribute;
-				return;
-			}
-			iterator = iterator->next;
-		}
+    ~List() {
+        while (tail != nullptr)
+        {
+            RemoveNode(tail);
+        }
+    }
 
 
-		if (tail->dataSize == tail->dataPopulated) {
-			AssignNode(attribute);
+    void AssignElement(T* data) {
+        if (tail == nullptr) {
+            ListNode* newNode = new ListNode(nodeDataSize);
+            newNode->AssignElement(data);
 
-			return;
-		}
+            head = newNode;
+            tail = newNode;
 
-		tail->AssignElement(attribute);
-	}
+            return;
+        }
 
-	void RemoveLastElement() {
-		tail->RemoveLastElement();
+        if (tail->dataSize == tail->lastNonemptyIndex + 1) {
+            AssignNode(data);
 
-		if (tail->data == nullptr) {
-			RemoveLastNode();
-		}
-	}
+            return;
+        }
 
-	void RemoveLastNode() {
-		ListNode* prevTail = tail;
+        tail->AssignElement(data);
+    }
 
-		bool hasOneNode = false;
-		if (tail == head) {
-			hasOneNode = true;
-		}
+    // Assuming that attributeNodes have maxSize == 1
+    void AssignAttributeElement(Attribute* attribute) {
+        if (tail == nullptr) {
+            ListNode* newNode = new ListNode(nodeDataSize);
+            newNode->AssignElement(attribute);
 
-		if (hasOneNode) {
-			delete tail;
-			tail = nullptr;
-			head = nullptr;
-		}
-		else {
-			tail = tail->previous;
-			delete prevTail;
-		}
+            head = newNode;
+            tail = newNode;
 
-		/*if (tail->previous != nullptr) {
-			tail = tail->previous;
-		}
-		else {
-			tail = nullptr;
-			head = nullptr;
-		}
+            return;
+        }
 
-		delete prevTail;
-		prevTail = nullptr;*/
-	}
+        ListNode* iterator = head;
+        while (iterator != nullptr)
+        {
+            if (iterator->data != nullptr && ((Attribute)iterator->data[0]).DoesMatchName(attribute)) {
 
-	int GetElementsCount() {
-		int counter = 0;
-		ListNode* iterator = head;
-		while (iterator != nullptr)
-		{
-			counter += iterator->dataPopulated;
-			iterator = iterator->next;
-		}
+                iterator->data[0] = *attribute;
+                return;
+            }
+            iterator = iterator->next;
+        }
 
-		return counter;
-	}
 
-	T* GetElement(int elementIndex) {
-		int nodesCounter = 0;
-		ListNode* iterator = head;
-		while (iterator != nullptr)
-		{
-			int lowerBoundary = nodesCounter * nodeDataSize;
-			int upperBoundary = (nodesCounter + 1) * nodeDataSize;
-			if (elementIndex >= lowerBoundary && elementIndex < upperBoundary) {
-				int exactIndex = elementIndex - lowerBoundary;
-				return &iterator->data[exactIndex];
-			}
+        if (tail->dataSize == tail->lastNonemptyIndex + 1) {
+            AssignNode(attribute);
 
-			nodesCounter += 1;
-			iterator = iterator->next;
-		}
+            return;
+        }
 
-		return nullptr;
-	}
+        tail->AssignElement(attribute);
+    }
 
-	
-	ListNode* GetHead() {
-		return head;
-	}
-	
-	ListNode* GetTail() {
-		return tail;
-	}
+    int GetElementsCount() const {
+        int counter = 0;
+        ListNode* iterator = head;
+        while (iterator != nullptr)
+        {
+            counter += iterator->dataPopulated;
+            iterator = iterator->next;
+        }
 
-	
+        return counter;
+    }
+
+    T* GetElement(int elementIndex) {
+        int currentIndex = 0;
+        ListNode* iterator = head;
+        while (iterator != nullptr)
+        {
+            for (int i = 0; i <= iterator->lastNonemptyIndex; i++)
+            {
+                if (!iterator->data[i].IsEmpty()) {
+                    if (currentIndex == elementIndex) {
+                        return &iterator->data[i];
+                    }
+                    currentIndex += 1;
+                }
+            }
+
+            iterator = iterator->next;
+        }
+
+        return nullptr;
+    }
+
+
+    bool RemoveElement(int elementIndex) {
+
+        int currentIndex = 0;
+        ListNode* iterator = head;
+        while (iterator != nullptr)
+        {
+
+            for (int i = 0; i <= iterator->lastNonemptyIndex; i++)
+            {
+                if (!iterator->data[i].IsEmpty()) {
+                    if (currentIndex == elementIndex) {
+
+                        bool wereRemoved = iterator->RemoveElement(i);
+
+                        if (wereRemoved && iterator->dataPopulated == 0) {
+                            RemoveNode(iterator);
+                        }
+                        return wereRemoved;
+                    }
+                    currentIndex += 1;
+                }
+            }
+
+            iterator = iterator->next;
+        }
+
+        return false;
+    }
+
+    void RemoveNode(ListNode* node) {
+        if (head == tail) {
+            head = nullptr;
+            tail = nullptr;
+        }
+        else if (node == head) {
+            head = node->next;
+        }
+        else if (node == tail) {
+            tail = node->previous;
+        }
+
+        delete node;
+        return;
+    }
+
+
+    ListNode* GetHead() {
+        return head;
+    }
+
+    ListNode* GetTail() {
+        return tail;
+    }
 };
-

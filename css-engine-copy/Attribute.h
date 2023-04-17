@@ -2,39 +2,37 @@
 #include "MyString.h"
 
 enum AttributePart {
-	NAME,
-	VALUE
+    NAME,
+    VALUE
 };
 
 class Attribute
 {
 private:
-	MyString* name;
-	MyString* value;
+    MyString* name;
+    MyString* value;
 
 public:
-	Attribute();
+    Attribute();
 
-	Attribute(Attribute& other);
+    Attribute(Attribute& other);
 
-	~Attribute();
+    ~Attribute();
 
-	Attribute& operator=(Attribute& other);
-	
-	void AddCharacter(char character, AttributePart part);
+    Attribute& operator=(Attribute& other);
 
-	void Trim();
+    void AddCharacter(char character, AttributePart part);
 
-	void Reset();
+    void Trim();
 
-
-	bool IsEmpty();
-
-	bool DoesMatchName(Attribute* name);
-	bool DoesMatchName(MyString& name);
+    void Reset();
 
 
+    bool IsEmpty() const;
 
-	MyString& GetValue();
+    bool DoesMatchName(Attribute* other) const;
+    bool DoesMatchName(MyString& otherName) const;
+
+
+    MyString& GetValue();
 };
-
